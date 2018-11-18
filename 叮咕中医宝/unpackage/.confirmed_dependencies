@@ -1,0 +1,178 @@
+{
+  "index.html": {
+    "refer": [
+      "zs.html",
+      "ys.html",
+      "my.html",
+      "cby.html",
+      "zx.html",
+      "login.html"
+    ],
+    "resources": []
+  },
+  "ysxq.html": {
+    "refer": [
+      "yszd1.html",
+      "ys.html"
+    ],
+    "resources": []
+  },
+  "ys.html": {
+    "refer": [
+      "ysxq.html",
+      "index.html"
+    ],
+    "resources": []
+  },
+  "yszd1.html": {
+    "refer": [
+      "yszd2.html",
+      "ysxq.html"
+    ],
+    "resources": []
+  },
+  "yszd2.html": {
+    "refer": [
+      "yszd3.html",
+      "yszd4.html",
+      "yszd5.html",
+      "yszd1.html"
+    ],
+    "resources": []
+  },
+  "yszd3.html": {
+    "refer": [
+      "yszd2.html"
+    ],
+    "resources": []
+  },
+  "yszd4.html": {
+    "refer": [
+      "zd.html"
+    ],
+    "resources": []
+  },
+  "zd.html": {
+    "refer": [
+      "zsxq.html",
+      "yszd4.html",
+      "ysOrder.html",
+      "ly.html",
+      "zx.html"
+    ],
+    "resources": []
+  },
+  "my.html": {
+    "refer": [
+      "cby.html",
+      "zx.html",
+      "index.html",
+      "order.html",
+      "aboutUs.html",
+      "login.html",
+      "modifyPwd.html",
+      "ysOrder.html"
+    ],
+    "resources": []
+  },
+  "cby.html": {
+    "refer": [
+      "zx.html",
+      "my.html",
+      "cbyxq.html",
+      "index.html"
+    ],
+    "resources": []
+  },
+  "zx.html": {
+    "refer": [
+      "ly.html",
+      "my.html",
+      "index.html",
+      "cby.html",
+      "zd.html"
+    ],
+    "resources": []
+  },
+  "ly.html": {
+    "refer": [
+      "ly.html",
+      "zx.html",
+      "zd.html"
+    ],
+    "resources": []
+  },
+  "zs.html": {
+    "refer": [
+      "index.html",
+      "zsxq.html"
+    ],
+    "resources": []
+  },
+  "cbyxq.html": {
+    "refer": [
+      "cbydd.html",
+      "cby.html"
+    ],
+    "resources": []
+  },
+  "cbydd.html": {
+    "refer": [
+      "cbyxq.html",
+      "paySuccess.html",
+      "index.html",
+      "order.html"
+    ],
+    "resources": []
+  },
+  "login.html": {
+    "refer": [
+      "index.html",
+      "reg.html"
+    ],
+    "resources": []
+  },
+  "paySuccess.html": {
+    "refer": [
+      "index.html",
+      "order.html"
+    ],
+    "resources": []
+  },
+  "order.html": {
+    "refer": [
+      "my.html",
+      "paySuccess.html",
+      "cby.html"
+    ],
+    "resources": []
+  },
+  "yszd5.html": {
+    "refer": [
+      "yszd2.html",
+      "zx.html",
+      "ys.html",
+      "paySuccess.html"
+    ],
+    "resources": []
+  },
+  "aboutUs.html": {
+    "refer": [
+      "my.html"
+    ],
+    "resources": []
+  },
+  "modifyPwd.html": {
+    "refer": [
+      "my.html"
+    ],
+    "resources": []
+  },
+  "ysOrder.html": {
+    "refer": [
+      "my.html",
+      "zd.html"
+    ],
+    "resources": []
+  }
+}

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>提交订单</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			/* pages/cbydd/cbydd.wxss */
+			/*button*/
+			.btn {
+				width: 90%;
+				padding: 5px 5% 10px 5%;
+				background: #fff;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: center;
+				border-bottom: 7.5px solid #f4f4f4
+			}
+
+			.dda-mid {
+				;
+				display: flex;
+				flex-direction: column;
+				width: 80%;
+				overflow: hidden;
+			}
+
+			.mid-top {
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+				flex-wrap: nowrap
+			}
+
+			.mid-top span {
+				margin-right: 15px
+			}
+
+			.mid-top .link {
+				padding: 2.5px 5px;
+				border: 1px solid #2A94C6;
+				color: #2A94C6;
+				font-size: 12px
+			}
+
+			.mid-bottom {
+				margin-top: 10px;
+				line-height: 17px;
+				font-size: 14px;
+				height: 34px;
+				overflow: hidden;
+				text-overflow: ellipsis
+			}
+
+			.btn span {
+				float: left
+			}
+
+			.btn img {
+				width: 20px;
+				height: 20px;
+				float: right
+			}
+
+			.drawer_screen {
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 1000;
+				background: #000;
+				opacity: .2;
+				overflow: hidden
+			}
+
+			.drawer_attr_box {
+				width: 100%;
+				overflow: hidden;
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				z-index: 1001;
+				background: #fff
+			}
+
+			.drawer_content {
+				padding: 10px 20px;
+				height: 235px;
+				overflow-y: scroll
+			}
+
+			.drawer_title {
+				padding: 10px;
+				font: 21px "microsoft yahei";
+				text-align: center
+			}
+
+			.line {
+				border-bottom: 1px solid #f8f8f8
+			}
+
+			.address-radios {
+				display: flex;
+				flex-wrap: wrap
+			}
+
+			.address-radio {
+				border: 1px solid #E6E6E6;
+				width: 90%;
+				padding: 5px 5%;
+				font-size: 14px;
+				background: #fff;
+				border-radius: 5px;
+				margin: 10px 0 0 0
+			}
+
+			.address_checked {
+				background: #2A94C6;
+				border: 1px solid #2A94C6;
+				color: #fff
+			}
+
+			.goshoping {
+				background: #2A94C6;
+				color: #fff;
+				width: 70%;
+				font-size: 17px;
+				line-height: 40px;
+				height: 40px;
+				margin: 30px 15% 10px 15%
+			}
+
+			.item-main {
+				padding: 10px 5%;
+				width: 90%;
+				display: flex;
+				flex-direction: row;
+				border-bottom: 7.5px solid #f4f4f4
+			}
+
+			.item-main-l {
+				width: 80px;
+				height: 80px;
+				margin-right: 10px;
+				padding: 5px
+			}
+
+			.item-main-l img {
+				width: 80px;
+				height: 80px;
+				overflow: hidden;
+			}
+
+			.item-main-r {
+				display: flex;
+				flex-direction: column
+			}
+
+			.item-main-rend {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 12.5px
+			}
+
+			.ddfp {
+				padding: 15px 5%;
+				width: 90%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				border-bottom: 1px solid #f4f4f4
+			}
+
+			.ddfpr {
+				display: flex;
+				align-items: center
+			}
+
+			.ddfpr img {
+				width: 15px;
+				height: 15px;
+				margin-left: 10px
+			}
+
+			.lymain {
+				padding: 15px 5%;
+				width: 90%;
+				border-bottom: 7.5px solid #f4f4f4
+			}
+
+			.lymain form {
+				width: 100%
+			}
+
+			.lymain textarea {
+				font-size: 15px;
+				font-weight: 400;
+				height: 20px;
+				line-height: 20px;
+				width: 100%;
+				border: none;
+			}
+
+			.ddamount {
+				padding: 15px 5%;
+				width: 90%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between
+			}
+
+			.ddsub {
+				width: 95%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				position: fixed;
+				bottom: 0;
+				height: 50px;
+				padding-left: 5%
+			}
+
+			.ddsuball {
+				text-align: right;
+				width: 55%;
+				padding-right: 5%
+			}
+
+			.ddsubbutn {
+				background: #2A94C6;
+				color: #fff;
+				width: 40%;
+				font-size: 17px;
+				line-height: 50px;
+				height: 50px;
+				text-align: center;
+				border: none;
+				border-radius: 0px
+			}
+
+			.ddfp .icon {
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				border: 1px solid #E6E6E6;
+				border-radius: 50%;
+			}
+
+			.ddfp.active .icon {
+				background: url('./img/radio.png') no-repeat;
+				background-size: 100% 100%;
+			}
+			.pay .pay_li{
+				height: 42px;
+				line-height: 42px;
+				text-indent: 15px;
+				border-bottom: 1px solid #E6E6E6;
+				font-size: 14px;
+			}
+			.pay .pay_li img{
+				width: 16px;
+				margin-right: 5px;
+			}
+			.pay .pay_li .pay_icon{
+				display: inline-block;
+				width: 15px;
+				height: 15px;
+				border-radius: 50%;
+				float: right;
+				margin-right: 15px;
+				border: 1px solid #E6E6E6;
+				margin-top: 18px;
+			}
+			.pay .pay_li.active .pay_icon{
+				background: url(./img/radio.png) no-repeat;
+				background-size: 100% 100%;
+			}
+			#h5Content{
+				position: fixed;
+				z-index: 999;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				bottom: 0;
+				background: white;
+				border: none;
+				display: none;	
+			}
+			.remind_p{
+				position: fixed;
+				width: 100%;
+				top: 0;
+				bottom: 0;
+				z-index: 99;
+				background: rgba(0,0,0,0.1);
+				display: none;
+			}
+			.remind_p .remind_con{
+				background: white;
+				width: 60%;
+				margin-top: 50%;
+				margin-left: 20%;
+				border-radius: 8px;
+				overflow: hidden;
+				text-align: center;
+				padding: 5px 0 15px 0;
+			}
+			.remind_p .re_con_info{
+				font-size: 14px;
+				padding: 10px 0 15px 0;
+				line-height: 26px;
+			}
+			.remind_p .re_btn{
+				text-align: left;
+			}
+			.remind_p .re_btn span{
+				display: inline-block;
+				font-size: 14px;
+				border: 1px solid #E6E6E6;
+				width: 30%;
+				text-align: center;
+				margin-left: 12%;
+				border-radius: 5px;
+				height: 28px;
+			}
+			.remind_p .re_btn span:nth-child(2){
+				background: #2A94C6;
+				color:white;
+			}
+		</style>
+	</head>
+
+	<body style="overflow-x: hidden;">
+		<header>
+			<span class="header_left" onclick="returnClick()"></span>
+			<div class="header_title">购买</div>
+		</header>
+		<!--pages/cbydd/cbydd.wxml-->
+		<div>
+			<div class='ddaddress'>
+				<!--button-->
+				<div class="btn" bindtap="chooseAddress" data-statu="open">
+					<div>
+						<img src='img/ddadress.png' mode='aspectFit'>
+					</div>
+					<div class='dda-mid'>
+						<div class='mid-top'>
+							<span class='span-c span-cola' id="name">落日！</span>
+							<span class='span-c span-cola' id="tel">13585568556</span>
+							<span class='link'>默认</span>
+						</div>
+						<div class='mid-bottom'>
+							<span class='span-colc' id="address">贵州省贵阳市南明区都会大道旁国际商</span>
+						</div>
+					</div>
+					<div>
+						<img src='img/next.png' mode='aspectFit'>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class='item-main'>
+				<div class='item-main-l'>
+					<img id="shop_pic" src='./img/1a.jpg' mode='aspectFit'>
+				</div>
+				<div class='item-main-r'>
+					<span class='span-d span-cold' id="shop_title">养生牙刷</span>
+					<span class='span-f span-colb' id="shop_type">规格：红色</span>
+					<div class='item-main-rend'>
+						<span class='span-c span-cole shop_price' style='margin-right:10px'>￥99</span>
+						<span class='span-f span-colb' id="shop_bumber">数量：1</span>
+					</div>
+				</div>
+			</div>
+
+			<div class='ddfp' id="icon" onclick="isInvoiceClick(this)" data-id="0">
+				<span class='span-d span-cold'>发票</span>
+				<div class='ddfpr'>
+					<span class='span-f span-colb'></span>
+					<span class="icon"></span>
+				</div>
+			</div>
+			<div class="lymain">
+				<form bindsubmit="bindFormSubmit">
+					<textarea id="message" placeholder="选填：给商家留言（30字以内）" name="textarea" bindinput="bindKeyspan" /></textarea>
+				</form>
+			</div>
+
+			<div class='ddamount'>
+				<span class='span-d span-cold'>金额</span>
+				<span class='span-c span-cole shop_price'>￥99</span>
+			</div>
+
+			<ul class="pay">
+				<li class="pay_li active" onclick="setPayType(this)" data-id='alipay'>
+					<img src="./img/alipay.png">支付宝支付<span class="pay_icon"></span>
+				</li>
+				<!-- <li class="pay_li" onclick="setPayType(this)" data-id="weixin">
+					<img src="./img/wepay.png">微信支付<span class="pay_icon"></span>
+				</li> -->
+			</ul>
+		</div>
+
+		<div class='ddsub'>
+			<div class='ddsuball'>
+				<span class='span-c span-cole' id="total_price">总计:￥99</span>
+			</div>
+			<button class='ddsubbutn' onclick='tijiao()'>点击想要</button>
+		</div>
+
+		<iframe id="h5Content" src=""></iframe>
+
+		<div class="remind_p">
+		<div class="remind_con">
+			<div class="re_con_t">提示</div>
+			<div class="re_con_info">支付成功?<br />确认商品订单页面</div>
+			<div class="re_btn">
+				<span onclick="payCancel()">返回首页</span>
+				<span onclick="payConfirm()">确认</span>
+			</div>
+		</div>
+	</div>
+	</body>
+
+</html>
+
+
+<script type="text/javascript">
+	document.addEventListener("plusready", function() {
+        // 注册返回按键事件
+        plus.key.addEventListener('backbutton', function() {
+            // 事件处理
+            if($("#h5Content").css('display') == 'block'){
+	       		$("#h5Content").css('display','none')
+	       	}else{
+	       		window.history.go(-1);
+	       	}
+        }, false);
+    });
+    window.addEventListener("popstate", function(e) { 
+   		if($("#h5Content").css('display') == 'block'){
+       		$("#h5Content").css('display','none')
+       	}else{
+       		window.history.go(-1);
+       	}
+	}, false);
+
+
+	function returnClick() {
+		window.history.go(-1);
+	}
+
+	function payCancel(){ // 如果关闭弹窗  此时在点击有上角返回的时候直接返回医生列表
+    	$('.remind_p').css('display','none');
+    	window.location.href = './index.html';
+    }
+    function payConfirm(){
+    	window.location.href = './order.html';
+    }
+
+	function isInvoiceClick(obj) {
+		if (obj.classList.contains('active')) {
+			obj.classList.remove('active');
+			obj.setAttribute('data-id', 0);
+		} else {
+			obj.classList.add('active');
+			obj.setAttribute('data-id', 1);
+		}
+	}
+
+	function setPayType(obj){
+		$('.pay_li.active').removeClass('active');
+		obj.classList.add('active');
+	}
+
+	function initData() {
+		$('#name').text(localStorage.getItem('address_name'));
+		$('#tel').text(localStorage.getItem('address_tel'));
+		$('#address').text(localStorage.getItem('address'));
+		$('#shop_title').text(localStorage.getItem('shop_title'));
+		$('#shop_type').text('规格：' + localStorage.getItem('classType'));
+		$('.shop_price').text("￥" + localStorage.getItem('price'));
+		$('#shop_bumber').text('数量：' + localStorage.getItem('shopNumber'));
+		$('#shop_pic').attr('src', localStorage.getItem('pic'));
+		var total_price = localStorage.getItem('shopNumber') * localStorage.getItem('price');
+		$('#total_price').text('总计:' + total_price);
+	}
+	initData();
+	// pages/cbydd/cbydd.js
+	function tijiao() {
+		var url = '/setShopOrder';
+		var data = {};
+		data.shop_id = parseInt(localStorage.getItem('shopId'));
+		data.shop_num = localStorage.getItem('shopNumber');
+		data.shop_type = localStorage.getItem('classType');
+		data.address = localStorage.getItem('address');
+		data.address_tel = localStorage.getItem('address_tel');
+		data.address_name = localStorage.getItem('address_name');
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		data.message = $('#message').val();
+		data.pay_type = $('.pay_li.active').attr('data-id');
+		data.is_invoice = $('#icon').attr('data-id');
+		if(data.pay_type == 'weixin'){
+			alert('暂不支持微信支付！');
+			return false;
+		}
+		console.log(data.message);
+
+		 // 生成商品订单
+	  //    * @post shop_id 商品id
+	  //    * @post shop_num 商品数量
+	  //    * @post shop_type 商品类别
+	  //    * @post address_name 联系人
+	  //    * @post address_tel 联系人电话
+	  //    * @post address 收货地址
+	  //    * @post is_invoice 是否开发票 0：不开 1：开
+	  //    * @post pay_type 支付方式 weixin：微信 alipay：支付宝
+	  //    * ~@post message 买家留言
+	  //    * @exception 102 支付接口已关闭
+	  //    * @exception 103 商品不存在
+	  //   * @exception 104 订单生成失败
+	  Load.loadDataShow(0);
+	  var timeout = setTimeout(function(){
+			LoadTimeout.remind('你的网络不给力。。');
+			Load.loadDataShow(1);
+		},5000);
+		AJAX.post(data, url, 'POST', function(res) {
+			clearTimeout(timeout);
+			Load.loadDataShow(1);
+			console.log(res);
+			if(res.code == 0){
+				zhifu(res.data.oid); // 支付
+				queryPayStatus(res.data.oid);// 查询支付状态
+				// window.location.href = res.data.content;
+			}else{
+				APP.remind(res.msg);
+			}
+		});
+	}
+
+	// * 发起支付
+ //     * @post order_id 订单号
+ //     * @exception 102 支付接口已关闭
+ //     * @exception 103 订单不存在
+ //     * @exception 104 订单已支付
+ //     * @exception 105 订单已状态有误
+	function zhifu(oid){
+		var url = '/setShopOrderPay';
+		var data = {};
+		data.order_id = oid;
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		Load.loadDataShow(0);
+		var timeout = setTimeout(function(){
+			LoadTimeout.remind('你的网络不给力。。');
+			Load.loadDataShow(1);
+		},5000);
+		AJAX.post(data, url, 'POST', function(res) {
+			isFocus = true;
+			clearTimeout(timeout);
+			Load.loadDataShow(1);
+			console.log(res);
+			if(res.code == 0){
+				$("#h5Content").attr("src",res.data.content).css('display','block');
+			}else{
+				APP.remind(res.msg);
+			}
+		});
+	}
+
+	// * 获取商品订单信息
+ //     * @post order_id 订单号
+ //     * @exception 102 订单不存在
+	function queryPayStatus(oid){ // 查询支付状态
+		var url = '/getShopOrderInfo';
+		var data = {};
+		data.order_id = oid;
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		// Load.loadDataShow(0);
+		// var timeout = setTimeout(function(){
+		// 	LoadTimeout.remind('你的网络不给力。。');
+		// 	Load.loadDataShow(1);
+		// },5000);
+		AJAX.post(data, url, 'POST', function(res) {
+			// clearTimeout(timeout);
+			// Load.loadDataShow(1);
+			if(res.code == 0){
+				if(res.data.is_pay == 1){
+					window.location.href = './paySuccess.html?type=0';
+				}else{
+					setTimeout(function(){
+						queryPayStatus(oid);
+					},2000);
+				}
+			}else{
+				
+			}
+		});
+	}
+
+	var isFocus = false;
+	 var hiddenProperty = 'hidden' in document ? 'hidden' :    
+        'webkitHidden' in document ? 'webkitHidden' :    
+        'mozHidden' in document ? 'mozHidden' :    
+        null;
+    var visibilityChangeEvent = hiddenProperty.replace(/hidden/i, 'visibilitychange');
+    var onVisibilityChange = function(){
+        if (!document[hiddenProperty]) {    
+        	if(isFocus){
+        		$("#h5Content").css('display','none')
+	       		$('.remind_p').css('display','block');
+	       		isFocus = false;
+        	}
+            // document.title='被发现啦(*´∇｀*)';
+        }else{
+            // document.title='藏好啦(つд⊂)  ';
+            // isFocus = true;
+        }
+    }
+    document.addEventListener(visibilityChangeEvent, onVisibilityChange);
+</script>

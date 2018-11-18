@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		
+		<title>诊所详情</title>
+		
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<link rel="stylesheet" type="text/css" href="css/flexslider.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="js/md5.js" ></script>
+    <!-- <script type="text/javascript" src="js/jquery-1.11.0.js" ></script> -->
+    <script type="text/javascript" src="js/ajax.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3bf97fafbc73146fee730aac50445292"></script>
+		<style type="text/css">
+			.zsxqtop{overflow: hidden; position: relative;}
+.zsxqswiper{ width: 100%; height: 175px; }
+.zsxqtop img{width: 100%; height:175px;}
+.zsxqwalk{width: 70px; height: 70px;display: flex; background: #2A94C6; color: #fff; z-index: 99; border-radius:50%; box-shadow:  0 0 10px rgba(0,0,0, 0.45); position: absolute;right: 10px; bottom: 10px;}
+.zsxqwalk a{width: 70px;display: flex; flex-direction: column;align-items:center;justify-content: center;color: #fff;}
+.zsxqwalk img{height: 30px;width: 30px;}
+
+.zsxqcon{ padding:0 5% 10px 5%; display: flex; flex-direction: column; border-bottom:10px solid #F4F4F4; }
+.zsxqtit{ line-height: 50px; white-space: nowrap}
+.zsxqyt{border-bottom:1px solid #E6E6E6; margin-bottom:9px; }
+.zsxqyt span{ line-height: 40px; font-size: 14px;}
+
+.zsxqpl{padding:0 5% 10px 5%; display: flex; flex-direction: column; }
+.zsxqpl-v{ display: flex; flex-direction: column; }
+.zsxqym{display: flex; flex-direction: row;}
+.zsxqym img{ width: 40px; height: 40px; border-radius: 25%;}
+.zsxqym-span{display: flex; flex-direction:column; padding-left: 10px;border-bottom:1px solid #E6E6E6; padding-bottom: 20px;}
+#allmap{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    z-index: 99;
+    top: 0;
+    bottom: 0;
+}
+		</style>
+		
+		<script type="text/javascript">
+
+$(function() {
+    $(".flexslider").flexslider({
+		slideshowSpeed: 4000, //展示时间间隔ms
+		animationSpeed: 400, //滚动时间ms
+		touch: true, //是否支持触屏滑动
+		keyboard: true //是否支持触屏滑
+	});
+});	
+</script>
+	</head>
+	<body>
+		
+		<div class='container'>
+<!--  <div class='zsxqtop'>-->
+  	
+  	
+  	
+  	
+  	<!--banner-->
+	<div id="main" class="zsxqtop">
+     	<div class="flexslider zsxqswiper">
+              <ul class="slides">
+                  <li><img class="slides_item" src="img/zspic1.jpg" /></li>
+                  <li><img class="slides_item" src="img/zspic2.jpg" /></li>
+                  <li><img class="slides_item" src="img/zspic3.jpg" /></li>
+              </ul>
+   		</div>
+   		<div class='zsxqwalk'>
+	      <a href='javascript:;' class='flex' onclick="placeClick()">
+	        <img src='img/walk.png' mode='aspectFit'>
+	        <span class='span-a'>到这去</span>
+	      </a>
+		</div>
+    </div>
+<!--banner end-->
+  	
+  	
+  	
+  	
+  	
+  <!--  <swiper class='zsxqswiper' indicator-dots="true" autoplay="true" duration="1000" bindchange="listenSwiper" >
+
+		      
+      <block wx:for="{{zsxq.pic}}">
+        <swiper-item>
+            <div><img src='{{item}}' mode='aspectFit'></div>
+        </swiper-item>
+      </block>   
+    </swiper>
+    <div class='zsxqwalk'>
+      <a href='' class='flex'>
+        <img src='img/walk.png' mode='aspectFit'>
+        <span class='span-a'>到这去</span>
+      </a>
+    </div>
+  </div>-->
+
+  <div class='zsxqcon'>
+    <span class='span-d span-cola zsxqtit' id="val_1">{{zsxq.hospital_name}}</span>
+    <span class='span-a span-colc' id="val_2">100m | {{zsxq.address}}</span>
+  </div>
+  <div class='zsxqcon'>
+    <div class='zsxqyt'><span class='span-cola'>营业时间</span></div>
+    <span class='span-a span-colb' id="val_3">{{zsxq.business_time}}</span>
+  </div>
+
+    <div class='zsxqcon'  style='border:none;'>
+    <div class='zsxqyt'><span class='span-cola'>诊所介绍</span></div>
+    <span class='span-a span-cold' style='line-height:22px;' id="val_4">{{zsxq.introduction}}</span>
+  </div>
+
+
+  <!--
+  <div class='zsxqpl'>
+    <div class='zsxqyt'>
+        <span class='span-a span-colc'>评论</span>
+        <span class='span-b span-colb'>（21条评论）</span>
+      </div>
+    <div class='zsxqpl-v'>
+      <div class='zsxqym'>
+         <img src='img/headpic.png' mode='aspectFit'>
+          <div class='zsxqym-span'>
+            <span class='span-b span-cold' style='line-height:25px;'>会飞的猪</span>
+            <span class='span-a span-colc' style='line-height:20px;'>如果你无法简洁的表达你的想法，那只说明你还不够了解它。  -- 阿尔伯特·爱因斯坦</span>
+          </div>
+      </div>
+      <div class='zsxqym'>
+         <img src='img/headpic.png' mode='aspectFit'>
+          <div class='zsxqym-span'>
+            <span class='span-b span-cold' style='line-height:25px;'>会飞的猪</span>
+            <span class='span-a span-colc' style='line-height:20px;'>如果你无法简洁的表达你的想法，那只说明你还不够了解它。  -- 阿尔伯特·爱因斯坦</span>
+          </div>
+      </div>
+      <div class='zsxqym'>
+         <img src='img/headpic.png' mode='aspectFit'>
+          <div class='zsxqym-span'>
+            <span class='span-b span-cold' style='line-height:25px;'>会飞的猪</span>
+            <span class='span-a span-colc' style='line-height:20px;'>如果你无法简洁的表达你的想法，那只说明你还不够了解它。  -- 阿尔伯特·爱因斯坦</span>
+          </div>
+      </div>
+    </div>
+  </div>-->
+
+
+<div id="allmap" style="display: none;"> </div>
+</div>
+		
+	</body>
+</html>
+
+
+<script type="text/javascript">
+  var title = "";
+  var content = '';
+  var id = window.location.href.split('?')[1].split('=')[1];
+  var longitude = 0;
+  var latitude = 0;
+	function getHospitalDetail(){
+    var url = "/getHospitalDetail";
+    var data = {'id':id};
+    data.token = localStorage.getItem('token');
+    data.user_id = localStorage.getItem('id');
+    AJAX.post(data,url,'POST',function(res) {
+      console.log(res);
+      if(res.code == 0){
+          var slidesList = document.getElementsByClassName('slides_item');
+          for(var i = 0 ; i < res.data.pic.length ; i++){
+            slidesList[i].setAttribute('src',res.data.pic[i]);
+          }
+          document.getElementById('val_1').innerHTML = res.data.hospital_name;
+          title = res.data.hospital_name;
+          document.getElementById('val_2').innerHTML = '100m&nbsp;|&nbsp;'+res.data.address;
+          content = res.data.address;
+          document.getElementById('val_3').innerHTML = res.data.business_time;
+          document.getElementById('val_4').innerHTML = res.data.introduction;
+          longitude = res.data.longitude;
+          latitude = res.data.latitude;
+          
+      }else{
+
+      }
+    });
+  }
+  getHospitalDetail();
+
+  function placeClick(){
+    initMap();
+  }
+   var scheme = "";
+   function initMap() {
+
+
+        var map = new BMap.Map("allmap");  
+    var point = new BMap.Point(longitude,latitude);
+
+    map.centerAndZoom(point, 12);  
+    map.enableScrollWheelZoom(); 
+
+    var myIcon = new BMap.Icon("myicon.png",new BMap.Size(30,30),{
+        anchor: new BMap.Size(10,10)    
+    });
+
+    var marker=new BMap.Marker(point,{icon: myIcon});  
+    map.addOverlay(marker);  
+
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition(function(r){
+        if(this.getStatus() == BMAP_STATUS_SUCCESS){
+            var mk = new BMap.Marker(r.point);
+            map.addOverlay(mk);
+            //map.panTo(r.point);//地图中心点移到当前位置
+            var latCurrent = r.point.lat;
+            var lngCurrent = r.point.lng;
+            //alert('我的位置：'+ latCurrent + ',' + lngCurrent);
+            // var href = "http://api.map.baidu.com/direction?origin="+latCurrent+","+lngCurrent+"&destination='"+latitude+"','"+longitude+"'&mode=driving&region=贵阳市&output=html"
+            window.location.href = "http://api.map.baidu.com/marker?location=" + latitude + "," + longitude + "&title=" + title + "&content=" +content+ "&output=html"
+
+            // window.location.href=href;
+
+        }
+        else {
+            alert('failed'+this.getStatus());
+        }        
+    },{enableHighAccuracy: true})
+
+
+    map.addOverlay(marker);  
+    var licontent="<b></b><br>";  
+        licontent+="<span><strong>地址：</strong></span><br>";  
+        licontent+="<span><strong>电话：</strong></span><br>";          
+    var opts = { 
+        width : 200,
+        height: 80,
+    };         
+    var  infoWindow = new BMap.InfoWindow(licontent, opts);  
+    marker.openInfoWindow(infoWindow);  
+    marker.addEventListener('click',function(){
+        marker.openInfoWindow(infoWindow);
+    });  
+    }
+
+    
+</script>

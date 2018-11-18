@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>支付成功</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+	</head>
+	<style type="text/css">
+		.con{
+			text-align: center;
+			padding-top: 40px;
+			padding-bottom: 50%;
+			font-size: 20px;
+		}
+		.con img{
+			display: block;
+			width: 30%;
+			margin: auto;
+			margin-bottom: 4px;
+		}
+		.pay_btn{
+			display: block;
+			height: 36px;
+			line-height: 36px;
+			width: 80%;
+			margin: auto;
+			margin-top: 20px;
+			background: #1296db;
+			color: white;
+			text-align: center;
+			border-radius: 18px;
+		}
+	</style>
+	<body>
+		<header>
+			<!-- <span class="header_left" onclick="returnClick()"></span> -->
+			<div class="header_title">支付成功</div>
+		</header>
+		<div class="con">
+			<img src="./img/pay_succ.png">
+			<div>支付成功</div>
+		</div>
+		<a class="pay_btn" href="./index.html">返回首页</a>
+		<a id="type_1" class="pay_btn" href="./zx.html" style="display: none">我的问答</a>
+		<a id="type_0" class="pay_btn" href="./order.html" style="display: none;">查看订单</a>
+	</body>
+	<script type="text/javascript">
+		function initPage(){
+			var type = parseInt(window.location.href.split('?')[1].split('=')[1]);
+			if(type == 1){
+				document.getElementById('type_1').style.display = 'block';
+			}
+			if(type == 0){
+				document.getElementById('type_0').style.display = 'block';
+			}
+		}
+		initPage();
+	</script>
+</html>

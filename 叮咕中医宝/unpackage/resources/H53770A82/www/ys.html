@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>找医生</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+
+		<link rel="stylesheet" href="./js/refresher/css/pullToRefresh.css" />
+		<script src="./js/refresher/js/iscroll.js"></script>
+		<script src="./js/refresher/js/pullToRefresh.js"></script>
+
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			.zs-top {
+				line-height: 40px;
+				height: 40px;
+				border-bottom: 1px solid #E6E6E6;
+				width: 100%;
+				overflow: hidden;
+				display: flex
+			}
+
+			.zs-top span {
+				padding: 0 25px;
+				display: flex
+			}
+
+			.zs-top .flex.active {
+				background: rgb(42, 148, 198);
+			}
+
+			.zs-top .flex.active span {
+				color: white;
+			}
+
+			.yslist {
+				border-bottom: 1px solid #E6E6E6;
+				position: relative;
+				width: 100%
+			}
+
+			.yslist a {
+				padding: 15px 5%;
+				width: 90%
+			}
+
+			.yslistpic {
+				width: 70px;
+				height: 70px;
+				border: 1px solid #E6E6E6;
+				border-radius: 6px
+			}
+
+			.yslist img {
+				width: 70px;
+				height: 70px;
+				border-radius: 6px
+			}
+
+			.yslist-r {
+				display: flex;
+				flex-direction: column;
+				margin-left: 15px
+			}
+
+			.yslist-r-tit {
+				line-height: 16px
+			}
+
+			.yslist-r-gold {
+				margin-top: 7.5px;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: center
+			}
+
+			.yslist-r-gold span {
+				white-space: nowrap
+			}
+
+			.ys-button {
+				height: 25px;
+				line-height: 25px;
+				padding: 0 15px;
+				font-size: 14px;
+				color: #fff;
+				background: #2A94C6;
+				border: none;
+				border-radius: 4px;
+				position: absolute;
+				bottom: 12px;
+				right: 15px
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<span class="header_left" onclick="returnClick()"></span>
+			<div class="header_title">选择医生</div>
+		</header>
+		<div class='zs-top'>
+			<a href='#' class='flex active' data-id="0" onclick="tabClick(0)">
+				<span class='span-d span-cola'>口碑</span>
+			</a>
+			<a href='#' class='flex' data-id="1" onclick="tabClick(1)"">
+    <span class='span-d span-cola'>按价格</span>
+  </a>
+<!--   <a href='' class='flex'>
+    <span class='span-d span-cola'>最热门</span>
+  </a>
+  <a href='' class='flex'>
+    <span class='span-d span-cola'>高口碑</span>
+  </a> -->
+</div>
+
+<div id="
+			 wrapper">
+				<ul id='doctor_list'>
+					<!-- <li  id="doctor_list"> -->
+					<li class='yslist'>
+						<a href='./ysxq.html?id={{item.id}}' class='navwidth flex'>
+							<div class='yslistpic'>
+								<img src='{{item.doctor_pic}}' mode='aspectFit'>
+							</div>
+							<div class='yslist-r'>
+								<div class='flex' class='yslist-r-tit'>
+									<span class='span-d span-cola'></span>
+									<span class='span-a span-colb' style='padding-left:10px;'></span>
+								</div>
+								<span class='span-a span-cold' style='margin-top:10px; max-height:80rpx;overflow:hidden'></span>
+								<div class='yslist-r-gold'>
+									<span class='span-d span-cole'></span>
+									<span class='span-b span-cold' style='margin-left:10px;'></span>
+									<button class='ys-button'>立即解惑</button>
+								</div>
+							</div>
+						</a>
+					</li>
+					<!-- </li> -->
+				</ul>
+		</div>
+
+	</body>
+</html>
+
+
+<script type="text/javascript">
+	function returnClick() {
+		window.history.go(-1);
+	}
+
+	var page = 1;
+
+	function tabClick(n) {
+		page = 1;
+		document.querySelector('.zs-top .flex.active').classList.remove('active');
+		document.querySelectorAll('.zs-top .flex')[n].classList.add('active');
+		getDoctorList(n);
+	}
+	refresher.init({
+		id: "wrapper",
+		pullDownAction: Refresh,
+		pullUpAction: Load
+	});
+
+	function Refresh() { // 下拉刷新
+		page = 1;
+		getListData(document.querySelector('.zs-top .flex.active').getAttribute('data-id'));
+		wrapper.refresh();
+	}
+
+	function Load() { // 上拉加载
+		page++;
+		getListData(document.querySelector('.zs-top .flex.active').getAttribute('data-id'));
+		wrapper.refresh();
+	}
+
+	// * 获取当前医生列表 getDoctorList
+	//  * @post limit 每页显示数量
+	//  * @post page 当前页数
+	//  * ～@post type 返回医生类型 0：口碑 1：价格
+	function getDoctorList(n) { // 获取诊所列表
+		var url = "/getDoctorList";
+		var data = {
+			'limit': 20,
+			'page': page
+		};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		data.type = n;
+
+		AJAX.post(data, url, 'POST', function(res) {
+			console.log(res);
+			if (res.code == 0) {
+				var _html = '';
+				_data = res.data.data;
+				for (var i = 0; i < _data.length; i++) {
+					_html += "<div class='yslist'>" +
+						"<a href='./ysxq.html?id=" + _data[0].id + "' class='navwidth flex'>" +
+						"<div class='yslistpic'>" +
+						"<img src='" + _data[0].doctor_pic + "' mode='aspectFit'>" +
+						"</div>" +
+						"<div class='yslist-r'>" +
+						"<div class='flex' class='yslist-r-tit'>" +
+						"<span class='span-d span-cola'>" + _data[0].doctor_name + "</span>" +
+						"<span class='span-a span-colb' style='padding-left:10px;'>" + _data[0].doctor_exp + "年养生理疗经验</span>" +
+						"</div>" +
+						"<span class='span-a span-cold'style='margin-top:10px; max-height:80rpx;overflow:hidden'>擅长：" + _data[0].skill +
+						"等</span>" +
+						"<div class='yslist-r-gold'>" +
+						"<span class='span-d span-cole'>￥" + _data[0].price / 100 + "/次</span>" +
+						"<span class='span-b span-cold' style='margin-left:10px;'>" + _data[0].num + "人已购买</span>" +
+						"<button class='ys-button'>立即解惑</button>" +
+						"</div>" +
+						"</div>" +
+						"</a>" +
+						"</div>";
+				}
+				if (page == 1)
+					$('#doctor_list').html(_html);
+				else
+					$('#doctor_list').append(_html);
+			} else {
+
+			}
+		});
+	}
+	getDoctorList(0);
+</script>

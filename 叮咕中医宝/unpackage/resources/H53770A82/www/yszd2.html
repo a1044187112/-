@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>选择症状</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+
+		<style type="text/css">
+			/* pages/yszd2/yszd2.wxss */
+			.yszd2-top {
+				width: 90%;
+				padding: 20px 5%;
+			}
+
+			.yszd2-top span {
+				white-space: nowrap;
+				font-size: 17px;
+				color: #313131;
+				margin-top: 10px;
+			}
+
+			.yszd2-main {
+				display: flex;
+				flex-direction: row;
+				border-bottom: 1px solid #E6E6E6;
+				width: 100%;
+				flex-wrap: wrap;
+			}
+
+			.yszd2-mainone {
+				width: 25%;
+				height: 90px;
+				border-top: 1px solid #E6E6E6;
+			}
+
+			.yszd2-mainone a {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				border-right: 1px solid #E6E6E6;
+				height: 100%;
+			}
+
+			.yszd2-mainone a img {
+				width: 35px;
+				height: 35px;
+				margin-bottom: 10px;
+			}
+
+			.yszd2-mainone a span {
+				font-size: 15px;
+				color: #626262;
+			}
+
+			.yszd2-yx {
+				width: 90%;
+				padding: 15px 5%;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.yszd2-bt {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+			}
+
+			.free-radios {
+				margin: 10px 10px 0px 0;
+			}
+
+			.is_checked {
+				background: #2A94C6;
+				color: #fff;
+			}
+
+			.yszdbutn {
+				font-size: 15px;
+				padding: 5px 15px;
+				background: #fff;
+				border-radius: 5px;
+				color: #626262;
+				border: 1px solid #E6E6E6;
+				display: block;
+				margin-top: 10px;
+				margin-right: 10px;
+			}
+
+			.yszdbutn.active {
+				display: none;
+			}
+
+			.flex-vc {
+				font-size: 15px;
+				color: #fff;
+				margin: 10px 10px 0px 0;
+				padding: 5px 7.5px;
+				background: #2A94C6;
+				border-radius: 4px;
+			}
+
+			.formsub {
+				background: #2A94C6;
+				color: #fff;
+				height: 50px;
+				line-height: 50px;
+				width: 100%;
+				position: fixed;
+				bottom: 0;
+				border-radius: 0;
+				font-size: 16px;
+				border: none;
+				text-align: center;
+			}
+
+			.lists {
+				width: 100%;
+				text-align: left;
+				margin-top: 10px
+			}
+
+			.lists .li {
+				display: inline-block;
+				margin-right: 15px;
+				padding: 4px 12px;
+				font-size: 12px;
+				border: 1px solid #cccccc;
+				margin-top: 10px;
+				border-radius: 4px
+			}
+
+			.lists .li.active {
+				color: white;
+				background: #2A94C6;
+				border: 1px solid #2A94C6;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<span class="header_left" onclick="returnClick()"></span>
+			<div class="header_title">选择问题</div>
+		</header>
+		<!--pages/yszd2/yszd2.wxml-->
+
+		<div class='container'>
+			<div class='yszd2-top'>
+				<span>请选择不同部位的问题:</span>
+			</div>
+			<div class='yszd2-main' id="container">
+
+				<!-- <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/tou.png'  mode='aspectFit'>
+        <span>头部</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/fu.png'  mode='aspectFit'>
+        <span>腹部</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/mian.png'  mode='aspectFit'>
+        <span>口鼻</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/yan.png'  mode='aspectFit'>
+        <span>咽喉</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/da.png'  mode='aspectFit'>
+        <span>大便</span> 
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/xiong.png'  mode='aspectFit'>
+        <span>胸部</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/wei.png'  mode='aspectFit'>
+        <span>胃部</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/she.png'  mode='aspectFit'>
+        <span>舌苔</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/leng.png'  mode='aspectFit'>
+        <span>冷热</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/shi.png'  mode='aspectFit'>
+        <span>食欲</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/jing.png'  mode='aspectFit'>
+        <span>精神</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/niao.png'  mode='aspectFit'>
+        <span>小便</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/shui.png'  mode='aspectFit'>
+        <span>睡眠</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/yin.png'  mode='aspectFit'>
+        <span>阴部</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/guan.png'  mode='aspectFit'>
+        <span>关节</span>
+      </a>
+    </div>
+    <div class='yszd2-mainone'>
+      <a href='yszd3.html' class='flex'>
+        <img src='img/pi.png'  mode='aspectFit'>
+        <span>皮肤</span>
+      </a>
+    </div> -->
+			</div>
+
+			<div class='yszd2-yx' style=' border-bottom: 1px solid #E6E6E6; '>
+				<span class='span-d span-cold'>已选问题：</span>
+				<ul class="lists">
+					<li class="li active">测试1</li>
+					<li class="li active">测试1</li>
+				</ul>
+			</div>
+
+			<div class='yszd2-yx' style='margin-bottom:50px;'>
+				<!--  <span class='span-d span-cold'>您可能还有以下问题：(点击选择)</span>
+      <div class='yszd2-bt'>
+          <button data-id="22" class='yszdbutn'>测试2</button>
+          <button data-id="23" class='yszdbutn'>测试2</button>
+          <button data-id="24" class='yszdbutn'>测试2</button>
+          <button data-id="26" class='yszdbutn'>测试2</button>
+      </div> -->
+			</div>
+
+
+			<!-- <a href='pages/yszd4/yszd4' class='flex navwidth' style=' height:25px; position: fixed; bottom: 50px; right:0;'>下一步</a> -->
+			<!-- <a href="yszd4.html"  class='formsub'>我选好了，点击提交</a> -->
+			<a href="#" class='formsub' onclick="submitJibingInfo()">我选好了，点击提交</a>
+
+		</div>
+
+	</body>
+</html>
+
+<script type="text/javascript">
+	function returnClick() {
+		window.history.go(-1);
+	}
+
+
+	function getTopSymptom() {
+		var url = "/getTopSymptom";
+		var data = {};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+
+		AJAX.post(data, url, 'POST', function(res) {
+
+			if (res.code == 0) {
+				var imgArr = ["img/tou.png", "img/fu.png", "img/mian.png", "img/yan.png", "img/da.png", "img/xiong.png",
+					"img/wei.png", "img/she.png", "img/leng.png",
+					"img/shi.png", "img/jing.png", "img/niao.png", "img/shui.png", "img/yin.png", "img/guan.png", "img/pi.png"
+				];
+				var _html = '';
+				for (var i = 0; i < res.data.length; i++) {
+					_html += "<div class='yszd2-mainone' onclick='itemClick(\"" + res.data[i].id + "\")' data-id='" + res.data[i].id +
+						"'>" +
+						"<a href='yszd3.html?id=" + res.data[i].id + "' class='flex'><img src='" + imgArr[i] + "'  mode='aspectFit'>" +
+						"<span>" + res.data[i].name + "</span></a></div>";
+				}
+				$('#container').html(_html);
+			}
+		});
+	}
+	getTopSymptom();
+
+
+	var jibingList = [];
+
+	function initSelector() {
+		jibingList = JSON.parse(localStorage.getItem('jibingList'));
+		var _html = '';
+		$.each(jibingList, function(i, item) {
+			_html += '<li class="li active" data-id="' + item.id + '">' + item.val + '</li>';
+		})
+
+		$('.lists').html(_html);
+	}
+	initSelector();
+
+	// 点击已经选中的
+	$('body').delegate('.li.active', 'click', function() {
+		var id = $(this).attr('data-id');
+		$.each(jibingList, function(i, item) {
+			if (id == item.id) {
+				jibingList.splice(i, 1);
+				localStorage.setItem('jibingList', JSON.stringify(jibingList));
+				initSelector();
+				// 如果是在本页面的 要将删除的显示出来
+				showThisItem(item.id);
+				return false;
+			}
+		})
+	});
+
+	// 选中本页面的问题
+	$('body').delegate('.yszdbutn', 'click', function() {
+		jibingList = JSON.parse(localStorage.getItem('jibingList'));
+		var itemData = {};
+		itemData.val = $(this).text();
+		itemData.id = $(this).attr('data-id');
+		jibingList.push(itemData);
+		localStorage.setItem('jibingList', JSON.stringify(jibingList));
+		$(this).addClass('active');
+		initSelector();
+	});
+
+	function showThisItem(id) {
+		$('.yszdbutn').each(function() {
+			console.log($(this).attr('data-id'));
+			if (id == $(this).attr('data-id')) {
+				$(this).removeClass('active');
+			}
+		});
+	}
+
+	var data = localStorage.getItem('data');
+	console.log(JSON.parse(data));
+
+	function submitJibingInfo() {
+		alert('支付接口繁忙  请稍后再试');
+	}
+</script>

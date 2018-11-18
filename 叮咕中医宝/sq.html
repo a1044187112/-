@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.sqweb {
+				width: 50%;
+				padding: 150px 25%;
+				flex-wrap: wrap;
+				display: flex;
+				flex-direction: column;
+			}
+			
+			.sqbutn {
+				width: 100%;
+				background: #2A94C6;
+				height: 40px;
+				line-height: 40px;
+				margin-bottom: 10px;
+				font-size: 16px;
+				color: #fff;
+				border: none;
+			}
+			
+			.sqweb span {
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class='sqweb'>
+			<button open-type="getUserInfo" bindgetuserinfo='bindGetUserInfo' class='sqbutn'>点击授权</button>
+			<span class='span-a span-colb'>请先点击授权登录后使用</span>
+		</div>
+
+	</body>
+
+</html>
+
+<script type="text/javascript">
+	// pages/sq/sq.js
+	Page({
+
+		/**
+		 * 页面的初始数据
+		 */
+		data: {
+
+		},
+
+		/**
+		 * 生命周期函数--监听页面加载
+		 */
+		onLoad: function(options) {
+
+		},
+
+		/**
+		 * 生命周期函数--监听页面初次渲染完成
+		 */
+		onReady: function() {
+
+		},
+
+		/**
+		 * 生命周期函数--监听页面显示
+		 */
+		onShow: function() {
+
+		},
+
+		/**
+		 * 生命周期函数--监听页面隐藏
+		 */
+		onHide: function() {
+
+		},
+
+		/**
+		 * 生命周期函数--监听页面卸载
+		 */
+		onUnload: function() {
+
+		},
+
+		/**
+		 * 页面相关事件处理函数--监听用户下拉动作
+		 */
+		onPullDownRefresh: function() {
+
+		},
+
+		/**
+		 * 页面上拉触底事件的处理函数
+		 */
+		onReachBottom: function() {
+
+		},
+
+		/**
+		 * 用户点击右上角分享
+		 */
+		onShareAppMessage: function() {
+
+		},
+		bindGetUserInfo(e) {
+			if(e.detail.userInfo) {
+				wx.reLaunch({ //跳转至指定页面并关闭其他打开的所有页面（这个最好用在返回至首页的的时候）
+					url: '/pages/index/index'
+				})
+			} else {
+
+			}
+
+		},
+	})
+</script>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>诊断结果</title><link rel="stylesheet" type="text/css" href="css/app.css"/><script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js" ></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3bf97fafbc73146fee730aac50445292"></script>  
+    <style type="text/css">
+			/* pages/zd/zd.wxss */
+
+.zdmain{display: flex; flex-direction: column; width: 84%; padding: 5px 8%;border-bottom: 10px solid #F4F4F4;}
+.zdtit{border-bottom: 1px solid #E6E6E6; }
+.zdtit span{ line-height: 30px;height: 30px;}
+.zdresu{ width: 100%; text-align: center;}
+.zdresu span{ line-height: 60px;height: 60px; font-size: 20px; color: #2A94C6;}
+.zdly{ width: 100%; text-align: right; padding: 10px 0 5px 0;}
+
+.zdyy{border-bottom: 1px solid #E6E6E6;display:  flex; flex-direction: column; padding: 5px 0;}
+.zdyy span{ padding: 5px 0;}
+.zdyx{display:  flex; flex-direction: column; padding: 5px 0;}
+.zdyx span{font-size: 14px; color: #313131; line-height: 30px;}
+.zdfjtit{border-bottom: 1px solid #E6E6E6; margin: 10px 5%;line-height: 30px;}
+
+		</style>
+	</head>
+	<body>
+		<header>
+      <span class="header_left" onclick="returnClick()"></span>
+      <div class="header_title">详情</div>  
+    </header>
+		<!--pages/zd/zd.wxml-->
+<div class='ysxqhead' style="padding: 10px 7%;">
+  <div class='ysxqhead-pic' style="width: 60px;height: 60px;">
+    <img id='val_6' src='{{ysxq.doctor_pic}}' mode='aspectFit' style="width: 60px;height: 60px;">
+  </div>
+  <div class='ysxqhead-span'>
+    <span class='span-c' style=' margin-bottom:10px;' id="val_1"></span>
+    <!-- <span class='span-f' style=' margin-bottom:2.5px;' id="val_2"></span>
+    <span class='span-f' id="val_3"></span> -->
+  </div>
+</div>
+
+<div class='container'>
+  <div class='zdmain'>
+    <div class='zdtit'>
+      <span class='span-d span-colc'>根据您的问题初步判断为：</span>
+    </div>
+    <div class='zdresu'>
+      <span id="jb_1"></span>
+    </div>
+    <div>
+      <span class='span-a span-cold' id="jb_2"></span>
+    </div>
+    <div class='zdly'>
+      <a id="info_html" href='ly.html'>
+        <span class='span-a span-colb'>（不准确？给医生留言）</span>
+      </a>
+    </div>
+  </div>
+
+  <div class='zdmain'>
+    <div class='zdtit'>
+      <span class='span-d span-colc'>康复方式</span>
+    </div>
+    <div class='zdyy'>
+      <span class='span-d' style='color:#FF9800' id="jb_3">阿斯蒂芬挖饿哦if回家艾斯的减肥都阿斯加德佛年</span>
+      <span class='span-b span-colb'>注：您可自行用也可以选择到附近的中e宝诊所</span>
+    </div>
+    <div class='zdyx'>
+      <span id="jb_4"></span>
+      <!-- <span>从新加坡v偶尔解放路科技旦</span>
+      <span>弗雷德就流口水的海景房</span> -->
+    </div>
+  </div>
+
+
+  <div>
+    <div class='zdfjtit'>
+      <span class='span-d span-colc'>附近的诊所</span>
+    </div>
+    <block wx:for="{{zslist}}" id="hospital_list">
+      <div class='flex zs-list'>
+        <a href='/pages/zsxq/zsxq?id={{item.id}}' class='navwidth flex'>
+          <div class='zs-listpic'>
+            <img src='{{item.hospital_head_pic}}'>
+          </div>
+          <div class='zs-listspan'>
+            <span class='span-d span-cola' style='padding-bottom:10px;'>{{item.hospital_name}}</span>
+            <span class='span-a span-colc'>{{item.address}}</span>
+            <span class='span-a span-colb'>营业时间：{{item.business_time}}</span>
+          </div>
+          <div class='zs-listmile'>
+            <span class='span-a span-colb'>{{item.distance}}</span>
+          </div>
+        </a>
+      </div>
+    </block>
+  </div>
+
+</div>
+		
+	</body>
+</html>
+
+
+<script type="text/javascript">
+  document.addEventListener("plusready", function() {
+        // 注册返回按键事件
+        plus.key.addEventListener('backbutton', function() {
+        // 事件处理
+           window.history.go(-1);
+        }, false);
+    });
+  // 获取咨询详情
+  // * 获取咨询详情
+  //    * @post id 咨询id
+  //    * @exception 102 咨询信息不存在
+  // * 获取诊断信息
+  //    * @post id 咨询id
+  //    * @exception 102 咨询信息不存在
+  //    * @exception 103 找不到匹配诊断
+  function getDiagnoInfo(){
+    localStorage.setItem('doctor_name',"");
+    localStorage.setItem('doctor_pic','');
+    var id = parseInt(window.location.href.split('?')[1].split('=')[1]);
+      var url = "/getDiagnoInfo";
+      var data = {'id':id};
+      data.token = localStorage.getItem('token');
+      data.user_id = localStorage.getItem('id');
+      Load.loadDataShow(0);
+      var timeout = setTimeout(function(){
+        LoadTimeout.remind('你的网络不给力。。');
+        Load.loadDataShow(1);
+      },5000);
+      AJAX.post(data,url,'POST',function(res) {
+        clearTimeout(timeout);
+        Load.loadDataShow(1);
+        console.log(res);
+        if(res.code == 0){
+          document.getElementById('val_6').setAttribute('src',res.data.doctor_pic);
+          document.getElementById('val_1').innerHTML = res.data.doctor_name;
+          localStorage.setItem('doctor_name',res.data.doctor_name);
+          localStorage.setItem('doctor_pic',res.data.doctor_pic);
+
+          document.getElementById('jb_1').innerHTML = res.data.diagno_name;
+          var jbText = [];
+          for(var i = 0 ; i < res.data.symptom.length ; i++){
+            jbText.push(res.data.symptom[i].name);
+          }
+          document.getElementById('jb_2').innerHTML = '症状：'+jbText.join('，');
+          document.getElementById('jb_3').innerHTML = res.data.diagno_treatment; 
+          document.getElementById('info_html').setAttribute('href','ly.html?id='+res.data.id);
+           document.getElementById('jb_4').innerHTML = res.data.diagno_pharmacology; 
+        }
+        if(res.code == 103){
+          window.location.href = 'ly.html?id='+res.data.id;
+        }
+      });
+  }
+     getDiagnoInfo();
+
+    function returnClick(){
+     window.history.go(-1);
+   }
+
+  
+
+  function getPosition(){
+      var geolocation = new BMap.Geolocation();  
+      // 创建地理编码实例      
+      var myGeo = new BMap.Geocoder();      
+      geolocation.getCurrentPosition(function(r){ 
+        console.log(r);
+         getHospitalList(r);
+      });
+    }
+    // * 获取当前诊所列表 getHospitalList
+  //  * @post limit 每页显示数量
+  //  * @post page 当前页数
+  //  * @post longitude 经度
+  //  * @post latitude 纬度
+  //  * ～@post type 返回诊所类型 0：附近 1：热门
+   function getHospitalList(r){ // 获取诊所列表
+    var url = "/getHospitalList";
+    var data = { 'longitude': r.longitude, 'latitude': r.latitude, 'limit': 10, 'page': 1,'type':0};
+    data.token = localStorage.getItem('token');
+    data.user_id = localStorage.getItem('id');
+    Load.loadDataShow(0);
+    var timeout = setTimeout(function(){
+      LoadTimeout.remind('你的网络不给力。。');
+      Load.loadDataShow(1);
+    },5000);
+    AJAX.post(data,url,'POST',function(res) {
+      clearTimeout(timeout);
+       Load.loadDataShow(1);
+      console.log(res);
+      if(res.code == 0){
+        var _html = '';
+        _data = res.data.data;
+        for(var i = 0 ; i < _data.length ; i++){
+            _html += "<div class='flex zs-list'>"+
+              "<a href='./zsxq.html?id="+_data[i].id+"' class='navwidth flex'>"+
+                "<div class='zs-listpic'>"+
+                  "<img src='"+_data[i].hospital_head_pic+"'>"+
+                "</div>"+
+                "<div class='zs-listspan'>"+
+                  "<span class='span-d span-cola' style='padding-bottom:10px;'>"+_data[i].hospital_name+"</span>"+
+                  "<span class='span-a span-colc'>"+_data[i].address+"</span>"+
+                  "<span class='span-a span-colb'>营业时间："+_data[i].business_time+"</span>"+
+                "</div>"+
+                "<div class='zs-listmile'>"+
+                  "<span class='span-a span-colb'>"+_data[i].distance+"</span>"+
+                "</div>"+
+              "</a>"+
+            "</div>";
+        }
+        document.getElementById('hospital_list').innerHTML = _html;
+      }else{
+
+      }
+    });
+  }
+ getPosition();
+</script>

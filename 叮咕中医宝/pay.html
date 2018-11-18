@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>支付</title><link rel="stylesheet" type="text/css" href="css/app.css"/><script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			/* pages/pay/pay.wxss */
+
+.payindex{ display: flex;
+    align-content: flex-start;
+    flex-direction: column;
+    box-sizing: border-box;justify-content: center;}
+.paytit{ padding: 40px 15%; width: 70%; text-align: center;}
+.paynum{ display: flex;justify-content: center; align-items: center; margin-bottom: 50px;}
+.paybutn{background: #2A94C6; color: #fff;width: 70%; font-size: 17px; line-height:40px; height:40px; margin: 80px 15% 10px 15%;border: none;border-radius: 4px;}
+		</style>
+	</head>
+	<body>
+		
+		<!--pages/pay/pay.wxml-->
+<div class='payindex'>
+  <div class='paytit'>
+    <span class='span-d span-cola'>
+      商品：{{shopinfo.title}}
+    </span>
+  </div>
+  
+  <div class='paynum'>
+    <span class='span-d span-cold'>需支付：</span>
+    <span class='span-c span-cole'>￥{{shopinfo.price}}</span>
+  </div>
+  <div class='paynum'>
+    <span class='span-d span-colb'>{{shopinfo.liuyan}}</span>
+  </div>
+  
+  <button form-type='' class='paybutn'>立即支付</button>
+</div>
+
+		
+	</body>
+</html>
+
+
+<script type="text/javascript">
+	// pages/pay/pay.js
+Page({
+
+  /**
+   * 页面的初始数据
+   */
+  data: {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var _self = this;
+
+    wx.getStorage({
+      key: 'shopinfo',
+      success: function (res) {
+        _self.setData({
+          shopinfo: res.data
+        })
+      }
+    })
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  }
+})
+</script>

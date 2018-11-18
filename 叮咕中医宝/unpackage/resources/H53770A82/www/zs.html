@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title></title><link rel="stylesheet" type="text/css" href="css/app.css"/><script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="./">
+
+    <link rel="stylesheet" href="./js/refresher/css/pullToRefresh.css" />
+    <script src="./js/refresher/js/iscroll.js"></script>
+    <script src="./js/refresher/js/pullToRefresh.js"></script>
+
+    <script type="text/javascript" src="js/md5.js" ></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+
+     
+   
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3bf97fafbc73146fee730aac50445292"></script>  
+		<style type="text/css">
+			.zs-top{ line-height: 40px; height: 40px; border-bottom: 1px solid #E6E6E6; width: 100%; overflow:  hidden; display: flex;}
+.zs-top span{ padding:0 25px; display: flex}
+.zs-top .flex.active{background: rgb(42,148,198);}
+.zs-top .flex.active span{color: white;}
+		</style>
+	</head>
+	<body>
+		<header>
+      <span class="header_left" onclick="returnClick()"></span>
+      <div class="header_title">附近诊所</div>  
+    </header>
+		<div class='zs-top'>
+  <a class='flex active' data-id="0"  onclick="tabClick(0)">
+    <span class='span-d span-cola'>附近</span>
+  </a>
+  <a class='flex' data-id="1"  onclick="tabClick(1)">
+    <span class='span-d span-cola'>热门</span>
+  </a>
+  <!-- <a class='flex' data-id="2">
+    <span class='span-d span-cola'  onclick="tabClick(2)">最热门</span>
+  </a> -->
+  <!--<a class='flex'>
+    <span class='span-d span-cola'>高口碑</span>
+  </a>-->
+</div>
+
+<div id="wrapper">
+    <ul class='container' >
+      <li id="hospital_list">
+        <div class='flex zs-list'>
+          <a href='./zsxq.html?id={{item.id}}' class='navwidth flex'>
+            <div class='zs-listpic'>
+              <img src='{{item.hospital_head_pic}}'>
+            </div>
+            <div class='zs-listspan'>
+              <span class='span-d span-cola' style='padding-bottom:10px;'>{{item.hospital_name}}</span>
+              <span class='span-a span-colc'>{{item.address}}</span>
+              <span class='span-a span-colb'>营业时间：{{item.business_time}}</span>
+            </div>
+            <div class='zs-listmile'>
+              <span class='span-a span-colb'>{{item.distance}}</span>
+            </div>
+          </a>
+        </div>
+      </li>
+    </ul>
+</div>
+
+</html>
+
+
+<script type="text/javascript">
+  var page = 1;
+  function returnClick(){
+     window.history.go(-1);
+   }
+
+    function tabClick(n){
+      page = 1;
+      document.querySelector('.zs-top .flex.active').classList.remove('active');
+      document.querySelectorAll('.zs-top .flex')[n].classList.add('active');
+      getHospitalList(n);
+    }
+
+   refresher.init({
+      id:"wrapper",
+      pullDownAction:Refresh,                                                            
+      pullUpAction:Load                                                                             
+    });    
+    function Refresh() {   // 下拉刷新
+      page = 1;
+      getHospitalList(document.querySelector('.zs-top .flex.active').getAttribute('data-id'));
+      wrapper.refresh();
+    } 
+     
+    function Load() {  // 上拉加载
+      page++;
+      getHospitalList(document.querySelector('.zs-top .flex.active').getAttribute('data-id'));
+      wrapper.refresh();
+    }
+    var positon = '';
+    function getPosition(){
+      var geolocation = new BMap.Geolocation();  
+      // 创建地理编码实例      
+      var myGeo = new BMap.Geocoder();      
+      geolocation.getCurrentPosition(function(r){ 
+        positon = r;
+        getHospitalList(0);
+      });
+    }
+
+    // * 获取当前诊所列表 getHospitalList
+    //  * @post limit 每页显示数量
+    //  * @post page 当前页数
+    //  * @post longitude 经度
+    //  * @post latitude 纬度
+    //  * ～@post type 返回诊所类型 0：附近 1：热门
+	 function getHospitalList(n){ // 获取诊所列表
+    var url = "/getHospitalList";
+    var data = { 'longitude': positon.longitude, 'latitude': positon.latitude, 'limit': 20, 'page': page};
+    data.token = localStorage.getItem('token');
+    data.user_id = localStorage.getItem('id');
+    data.type = n;
+    AJAX.post(data,url,'POST',function(res) {
+      console.log(res);
+      if(res.code == 0){
+        var _html = '';
+        _data = res.data.data;
+        for(var i = 0 ; i < _data.length ; i++){
+            _html += "<div class='flex zs-list'>"+
+              "<a href='./zsxq.html?id="+_data[i].id+"' class='navwidth flex'>"+
+                "<div class='zs-listpic'>"+
+                  "<img src='"+_data[i].hospital_head_pic+"'>"+
+                "</div>"+
+                "<div class='zs-listspan'>"+
+                  "<span class='span-d span-cola' style='padding-bottom:10px;'>"+_data[i].hospital_name+"</span>"+
+                  "<span class='span-a span-colc'>"+_data[i].address+"</span>"+
+                  "<span class='span-a span-colb'>营业时间："+_data[i].business_time+"</span>"+
+                "</div>"+
+                "<div class='zs-listmile'>"+
+                  "<span class='span-a span-colb'>"+_data[i].distance+"</span>"+
+                "</div>"+
+              "</a>"+
+            "</div>";
+        }
+        if(page == 1)
+          $('#hospital_list').html(_html);
+        else
+           $('#hospital_list').append(_html);
+      }else{
+
+      }
+    });
+  }
+ getPosition();
+</script>

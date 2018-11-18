@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<title>叮咕中e宝</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+
+		<script type="text/javascript" src="js/app.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			/**index.wxss**/
+			.head {
+				width: 92%;
+				padding: 10px 4% 0 4%;
+				background: url(img/top-bg.png) no-repeat;
+				background-size: 100% auto;
+			}
+
+			.headtop {
+				display: flex;
+				height: 20px;
+				width: 100%;
+				line-height: 20px;
+				padding-bottom: 15px
+			}
+
+			.headtop-l {
+				width: 50%;
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+				flex-wrap: nowrap;
+			}
+
+			.headtop-r {
+				width: 50%;
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-end;
+				flex-wrap: nowrap;
+			}
+
+			.headtop-l img {
+				height: 20px;
+				width: 20px;
+				margin-right: 3px;
+				overflow: hidden;
+			}
+
+			.headtop-r img {
+				height: 20px;
+				border-radius: 30%;
+				width: 30px;
+				margin-right: 5px;
+				overflow: hidden;
+			}
+
+
+			.headmid {
+				width: 90%;
+				margin: 0 auto;
+				background: #fff;
+				height: 120px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.12);
+				border-radius: 11px;
+				display: flex;
+			}
+
+			.headmid-l {
+				display: flex;
+				height: 100px;
+				align-items: center;
+				padding: 15px 0 0 0;
+				flex-direction: column;
+				margin: 0 auto;
+			}
+
+			.headmid-l img {
+				width: auto;
+				height: 45px;
+				display: flex;
+				margin-bottom: 5px;
+			}
+
+			.headmid a {
+				width: 100%;
+			}
+
+			.headdown {
+				width: 90%;
+				margin: 0 auto;
+				background: #fff;
+				height: 45px;
+				display: flex;
+				margin-top: 15px;
+			}
+
+			.headdown-v {
+				display: flex;
+				padding-left: 7.5px;
+			}
+
+			.headdown-v img {
+				height: 45px;
+				width: 45px;
+				flex-direction: column;
+				display: flex;
+				overflow: hidden;
+			}
+
+			.headdown-v-in {
+				display: flex;
+				flex-direction: column;
+				height: 52px;
+				padding: 6px 0 0 7.5px;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+			.headdown-v-in span{
+				line-height: 22px;
+			}
+
+			.jibing {
+				width: 100%;
+				margin-top: 12.5px;
+			}
+
+			.jbtittle {
+				width: 90%;
+				padding: 10px 5%;
+			}
+
+			.jb-hoverd-btn {
+				color: #2A94C6;
+				border-bottom: #2A94C6 solid 2px;
+			}
+
+			.jb-nav {
+				white-space: nowrap;
+				width: 92%;
+				margin: 0 auto;
+				background: #F4F4F4;
+				padding: 0 4%;
+				color: #373737;
+			}
+
+			.jb-btn {
+				display: inline-block;
+				padding: 11px;
+				font-size: 16px;
+			}
+
+			#jb_list {
+				width: 100%;
+			}
+
+			.jblist {
+				width: 92%;
+				margin: 0 auto;
+				background: #fff;
+				padding: 5px 4%;
+				border-bottom: 3px solid #F4F4F4;
+				font-size: 14px;
+			}
+
+			.jb-tit {
+				display: flex;
+				height: 40px;
+				line-height: 40px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			.jb-span {
+				display: flex;
+				line-height: 20px;
+				color: #797979;
+			}
+
+			.jb-someone {
+				display: flex;
+				height: 30px;
+				margin-top: 5px;
+			}
+
+			.jb-someone img {
+				display: flex;
+				height: 20px;
+				width: 20px;
+				margin-top: 5px;
+				border-radius: 2px;
+			}
+
+			.jb-someone span {
+				line-height: 30px;
+				color: #797979;
+				margin-left: 7.5px;
+			}
+		</style>
+	</head>
+	<body onscroll="scrollLoadData()">
+
+		<!--index.wxml-->
+		<div scroll-y="true" style="width: 100%; overflow: hidden;position: relative; margin-bottom: 80px;" class="container">
+			<div class='head'>
+				<div class='headtop'>
+					<div class='headtop-l'>
+						<!--
+        <a class='flex'>
+          <img src='img/location.png' mode='aspectFit'>
+          <span class='span-a'>贵阳</span>
+        </a> -->
+					</div>
+					<div class='headtop-r'>
+						<a class='flex'>
+							<img src='./img/hp.jpeg' mode='aspectFit'>
+							<span class='span-a' id="user_name">你好,落日！</span>
+						</a>
+					</div>
+				</div>
+
+				<div class='headmid'>
+					<a href='./zs.html' class='flex' style='border-right: 1px solid #E8E8E8;'>
+						<div class='headmid-l'>
+							<img src='img/hospital.png' mode='aspectFit'>
+							<span class='span-c span-cola'>找诊所</span>
+							<span class='span-b span-colb'>附近的诊所，方便快捷</span>
+						</div>
+					</a>
+					<a href='./ys.html' class='flex'>
+						<div class='headmid-l'>
+							<img src='img/doctor.png' mode='aspectFit'>
+							<span class='span-c span-cola'>找医生</span>
+							<span class='span-b span-colb'>老中医坐诊，放心无忧</span>
+						</div>
+					</a>
+				</div>
+
+				<div class='headdown'>
+					<a href='tel:085185771171' class='flex navwidth'>
+						<div class='headdown-v'>
+							<img src='img/phone.png' mode='aspectFit'>
+							<div class='headdown-v-in'>
+								<span class='span-d span-cola'>快捷电话</span>
+								<span class='span-b span-colb'>0851-85771171</span>
+							</div>
+						</div>
+					</a>
+					<a href='./cby.html' class='flex navwidth'>
+						<div class='headdown-v'>
+							<img src='img/medicine.png' mode='aspectFit'>
+							<div class='headdown-v-in'>
+								<span class='span-d span-cola'>常备药</span>
+								<span class='span-b span-colb'>有备无患品质保证</span>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+
+			<div class='jibing'>
+				<div class='jbtittle'>
+					<span class='span-d span-cola'>疾病答疑</span>
+				</div>
+				<div scroll-x="true" class="jb-nav" id="jb_nav">
+					<!--  <block wx:for="{{jb_name}}">
+        <div id='tab{{item.id}}' data-id="{{item.id}}" bindtap="change_tab" class="jb-btn {{tab_num=='tab' + item.id?'jb-hoverd-btn':''}}">{{item.name}}</div>
+      </block> -->
+				</div>
+				<ul id='jb_list'>
+
+				</ul>
+			</div>
+
+
+			<div class="tabbar">
+				<a href="#">
+					<img src="img/home-hover.png" />
+					<p>首页</p>
+				</a>
+				<a href="./zx.html">
+					<img src="img/consulting.png" />
+					<p>问答</p>
+				</a>
+				<a href="./cby.html">
+					<img src="img/medicinebox.png" />
+					<p>常备药</p>
+				</a>
+				<a href="./my.html">
+					<img src="img/my.png" />
+					<p>个人中心</p>
+				</a>
+			</div>
+
+		</div>
+		<div class="bg">
+			<div class="con">
+				<div class="bg_t">更新</div>
+				<div class="bg_info">有新版本,是否更新？</div>
+				<div class="bg_btn">
+					<span onclick="cancel()" class="bg_cancel">取消</span>
+					<span onclick="confirm()" class="bg_confirm">确认</span>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+
+<script type="text/javascript">
+
+	document.addEventListener("plusready", function() {
+        // 注册返回按键事件
+        plus.key.addEventListener('backbutton', function() {
+        // 事件处理
+            // plus.nativeUI.confirm("退出程序？", function(event) {
+            //     if (event.index) {
+                    plus.runtime.quit();
+            //     }
+            // }, null, ["确定","取消"]);
+        }, false);
+    });
+	//	var data = {'page':1,'limit':10};
+	//	$.post(url,data,function(res){
+	//		console.log(res)
+	//	});
+	//	void modifyData(int page,int limit){}
+	$('#user_name').text("你好，"+localStorage.getItem('user_name'));
+	var versionUrl = '';
+	// 获取版本号
+	function getVersion() {
+		var version = '2.5';
+		var url = "/getVersion";
+		var data = {};
+		AJAX.post(data, url, 'POST', function(res) {
+			console.log(res);
+			if (res.code == 0) {
+				localStorage.setItem('IP',res.data.ip);
+				if (version < res.data.app_version) {
+					versionUrl = res.data.app_update_url + res.data.app_en_name + '.apk';
+					$('.bg').css('display', 'block');
+				}
+			}
+		});
+	}
+
+	function cancel() { // 取消更新
+		$('.bg').css('display', 'none');
+	}
+
+	function confirm() { // 确认更新
+		$('.bg').css('display', 'none');
+		var $form = $('<form method="GET"></form>');
+		$form.attr('action', versionUrl);
+		$form.appendTo($('body'));
+		$form.submit();
+
+	}
+
+
+
+	getVersion();
+	// 获取疾病分类
+	function getjibingCa() {
+		Load.loadDataShow(0);
+		var url = "/getJibingCategory";
+		var data = {};
+		var token = localStorage.getItem('token');
+		if (!token) {
+			window.location.href = 'login.html';
+		}
+		data.token = token;
+		data.user_id = localStorage.getItem('id');
+		var timeout = setTimeout(function(){
+			LoadTimeout.remind('你的网络不给力。。');
+			Load.loadDataShow(1);
+		},5000);
+		AJAX.post(data, url, 'POST', function(res) {
+			clearTimeout(timeout);
+			if (res.code == 0) {
+				var _html = '';
+				for (var i = 0; i < res.data.length; i++) {
+					_html += "<div  onclick='jibingCatClick(" + res.data[i].id + "," + i + ")' class='jb-btn'>" + res.data[i].name +
+						"</div>";
+				}
+				document.getElementById('jb_nav').innerHTML = _html;
+				jibingCatClick(res.data[0].id, 0)
+				Load.loadDataShow(1);
+			} else {
+				Load.loadDataShow(1);
+			}
+		});
+	}
+	getjibingCa();
+
+
+	function jibingCatClick(id, n) { // 疾病类别点击
+		var tabList = document.getElementsByClassName('jb-btn');
+		for (var i = 0; i < tabList.length; i++) {
+			tabList[i].classList.remove('jb-hoverd-btn');
+		}
+		tabList[n].classList.add('jb-hoverd-btn');
+
+		getJibingList(id); // 获取疾病的list    
+	}
+
+	function getJibingList(id) {
+		Load.loadDataShow(0);
+		var url = "/getJibingList";
+		var data = {
+			id: id
+		};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		var timeout = setTimeout(function(){
+			LoadTimeout.remind('你的网络不给力。。');
+		},5000);
+		AJAX.post(data, url, 'POST', function(res) {
+			clearTimeout(timeout);
+			if (res.code == 0) {
+				Load.loadDataShow(1);
+				var _html = '';
+				for (var i = 0; i < res.data.length; i++) {
+					_html += "<li class='jblist'>" +
+						"<a href='' class='navwidth'>" +
+						"<span class='jb-tit span-d span-cola'>" + res.data[i].title + "</span>" +
+						"<span class='jb-span span-a'>病情分析：" + res.data[i].condition + "</span>" +
+						"<div class='jb-someone'>" +
+						"<img src='img/headpic.png'  mode='aspectFit'>" +
+						"<span class='span-a'>" + res.data[i].doctor_name + "</span>" +
+						"<span class='span-a'>" + res.data[i].doctor_title + "</span>" +
+						"<span class='span-a'>|</span>" +
+						"<span class='span-a'>" + res.data[i].hospital_name + "</span>" +
+						"</div>" +
+						"</a>" +
+						"</li>";
+				}
+				document.getElementById('jb_list').innerHTML = _html;
+			} else {
+				Load.loadDataShow(1);
+			}
+		});
+	}
+
+	function scrollLoadData() {
+		var innerHeight = window.innerHeight;
+		var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+		var height = document.body.scrollHeight;
+		if (height - (innerHeight + scrollTop) < 20) { // 更新数据
+
+		}
+	}
+</script>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>选择症状</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			/* pages/yszd3/yszd3.wxss */
+			.yszd2-yx {
+				width: 90%;
+				padding: 25px 5%;
+			}
+
+			.lists {
+				width: 100%;
+				text-align: left;
+				margin-top: 20px
+			}
+
+			.lists .li {
+				display: inline-block;
+				margin-right: 15px;
+				padding: 4px 12px;
+				font-size: 12px;
+				border: 1px solid #cccccc;
+				margin-top: 10px;
+				border-radius: 4px
+			}
+
+			.lists .li.active {
+				color: white;
+				background: #2A94C6;
+				border: 1px solid #2A94C6;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<span class="header_left" onclick="returnClick()"></span>
+			<div class="header_title">选择问题</div>
+		</header>
+		<!--pages/yszd3/yszd3.wxml-->
+		<div class='yszd2-yx'>
+			<span class='span-d span-cold'>请选择以下头部的问题:(点击选择)</span>
+			<ul class="lists" id="lists">
+				<!--  <li class="li" data-id="1">测试1</li>
+        <li class="li" data-id="2">测试1</li>
+        <li class="li" data-id="3">测试1</li>
+        <li class="li" data-id="4">测试1</li>
+        <li class="li" data-id="5">测试1</li>
+        <li class="li" data-id="6">测试1</li>
+        <li class="li" data-id="7">测试1</li>
+        <li class="li" data-id="8">测试1</li>
+        <li class="li" data-id="9">测试1</li>
+        <li class="li" data-id="10">测试1</li>
+        <li class="li" data-id="11">测试1</li>
+        <li class="li" data-id="12">测试1</li> -->
+			</ul>
+		</div>
+
+
+	</body>
+</html>
+
+
+<script type="text/javascript">
+	function initClick() {
+		$('body').delegate('.li', 'click', function() {
+			if ($(this).hasClass('active')) {
+				$(this).removeClass('active')
+			} else {
+				$(this).addClass('active');
+			}
+		});
+	}
+	initClick();
+
+	function returnClick() {
+		var arr = [];
+		$('.li.active').each(function(i, item) {
+			var itemData = {};
+			itemData.val = $(item).text();
+			itemData.id = $(item).attr('data-id');
+			arr.push(itemData);
+		});
+		localStorage.setItem('jibingList', JSON.stringify(arr));
+		window.history.go(-1);
+	}
+
+	// * 获取子级症状  getSubSymptom
+	//   * @post id 一级症状id
+	function getJibingList() {
+		var id = window.location.href.split('?')[1].split('=')[1];
+		var url = "/getSubSymptom";
+		var data = {};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		data.id = id;
+		AJAX.post(data, url, 'POST', function(res) {
+			if (res.code == 0) {
+				var _html = '';
+				for (var item in res.data) {
+					_html += '<li class="li" data-id="' + res.data[item].id + '">' + res.data[item].name + '</li>';
+				}
+				$('#lists').html(_html);
+			}
+		});
+	}
+	getJibingList();
+</script>

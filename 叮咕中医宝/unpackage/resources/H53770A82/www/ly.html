@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>留言</title><link rel="stylesheet" type="text/css" href="css/app.css"/><script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style type="text/css">
+		/* pages/ly/ly.wxss */
+.lymain{ width: 100%;display: flex; flex-direction: column;}
+.lymain form{ width: 100%; align-items: auto;}
+.lymain textarea{ font-size: 15px; width: 70%; margin:20px 10%; font-weight: normal; background: #fafafa;border: 1px solid #E6E6E6; padding:10px 5%; border-radius: 4px; min-height:50px; max-height: 100px; }
+.lymain button{ width:50%;height: 40px; line-height: 40px; background: #2A94C6; color: #fff; border: none; border-radius: 4px; margin-top: 20px; margin-left: 25%;}
+.myword{display: flex; flex-direction: column; padding: 10px 8%; width: 84%;}
+.myword .tittle{border-bottom: 1px solid #E6E6E6; margin-bottom: 10px;}
+.myword .tittle span{ line-height: 40px;}
+.docword{display: flex; flex-direction: column; padding: 10px 8%; width: 84%; background: #F0F0F0;}
+.docword span{ margin-bottom: 5px; line-height: 22.5px;}	
+		</style>
+		
+	</head>
+	<body>
+    <header>
+      <span class="header_left" onclick="returnClick()"></span>
+      <div class="header_title">留言</div>  
+    </header>
+		<!--pages/ly/ly.wxml-->
+<div class='container'>
+<div class='ysxqhead'>
+    <div class='ysxqhead-pic'>
+      <img src='img/headpic.png' mode='aspectFit'>
+    </div>
+    <div class='ysxqhead-span'>
+      <span class='span-c' style=' margin-bottom:10px;'>王德明</span>
+      <span class='span-f' style=' margin-bottom:2.5px;'>20年中医诊疗经验</span>
+      <span class='span-f'>治愈人数5万余例</span>
+    </div>
+  </div>
+
+  <div class='myword'>
+    <div class='tittle'>
+      <span class='span-d span-colc'>您的留言：</span>
+    </div>
+    <span class='span-a span-cold' style=' line-height: 22.5px;'>腰酸乏力，气短，眼视力降，耳鸣，多梦，大脑迟钝，消瘦脸黄，大夫这怎么办？</span>
+  </div>
+
+  <div class='docword'>
+    <span class='span-d span-colc'>医生回复：</span>
+    <span class='span-a span-colc'>问题分析：根据你的情况和描述来看。这个不排除肝功能损伤的可能。或者是中医说的肾虚疾病。内分泌失调引起的最好去医院检查一下
+</span>
+    <span class='span-a span-colc'>指导建议：建议你去医院做个肝功能的检查。平时保持乐观积极的心态。好好休息注意适当的锻炼，戒烟酒。</span>
+  </div>
+
+ <div class="lymain">
+  <form bindsubmit="bindFormSubmit">
+    <textarea placeholder="请写下您的具体情况" name="textarea"/></textarea>
+    <button form-type="submit"> 提交留言 </button>
+  </form>
+</div>
+</div>
+<script type="text/javascript">
+   function returnClick(){
+     window.history.go(-1);
+   }
+</script>
+	</body>
+</html>

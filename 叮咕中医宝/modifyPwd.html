@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>修改密码</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<!-- <script type="text/javascript" src="js/prefixfree.min.js" ></script> -->
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			.login{width: 80%; padding: 50px 10%; display: flex; flex-direction: column;align-items: center;}
+			.logo{text-align: center; width: 100%; align-items: center; display: flex; flex-direction: column; margin-top: 10px;}
+			.logo img{ width: 45%; margin-bottom: 20px}
+			.loginmes{ margin-top: 30px;display: flex; flex-direction: column; align-items: center;width: 100%;}
+			.loginmes input{ border-bottom: 1px solid #E6E6E6; height: 40px; line-height: 40px; color: #888888; display: block; padding-left: 5px;width: 80%; margin-bottom: 5px;}
+			.loginmes a{color: #CCCCCC;font-size: 12px; text-align: right;width:80%; height:30px; line-height: 30px;}
+			.loginbutn{ margin-top: 20px; width: 100%; padding: 10px; display: flex;flex-direction: column;align-items: center;}
+			.loginbutn a{display: block; width: 80%; height: 40px; line-height: 40px; border-radius: 4px; text-align: center; font-size: 14px;}
+			.denglu{ color: #fff; background: #2A94C6; margin-bottom: 15px;}
+			.reg{color: #666666; border: 1px solid #E6E6E6;}
+		</style>
+	</head>
+	<body>
+		
+		<div class="login">
+			<div class="logo">
+				<img src="img/logosmall.jpg" style="width: 60%;"/>
+				<img src="img/title.png" />
+			</div>
+			<div class="loginmes">
+				<input id="phone" type="text" name="p" placeholder="请输入手机号码">
+				<input id="old_pwd" type="password" name="q" placeholder="请输入密码" />
+				<input id="new_pwd" type="password" name="c_p" placeholder="请输入新密码" />
+				<input id="con_pwd" type="password" name="c_p" placeholder="请确认新密码" />
+				<!-- <a href="reg.html">返回登录</a> -->
+			</div>
+			<div class="loginbutn">
+				<a href="#" class="reg" onclick="modifyPwd()">确认修改</a>
+			</div>
+		</div>
+		
+	</body>
+	<script>
+		document.addEventListener("plusready", function() {
+        // 注册返回按键事件
+	        plus.key.addEventListener('backbutton', function() {
+	        // 事件处理
+	           window.history.go(-1);
+	        }, false);
+	    });
+		function login(){
+			
+		}
+		// * 用户修改密码
+  //    * @post password 原密码
+  //    * @post new_password 原密码
+  //    * @exception 102 用户不存在
+  //    * @exception 103 原密码错误
+  //    * @exception 104 密码修改失败
+		function modifyPwd(){
+			var phone = $('#phone').val();
+			var old_pwd = $('#old_pwd').val(); // 原密码
+			var new_pwd = $('#new_pwd').val(); // 原密码
+			var con_pwd = $('#con_pwd').val(); // 原密码
+			if (!(/^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(phone))) {
+				APP.remind("手机号码输入错误");
+				document.mobileform.mobile.focus();
+				return false;
+			}
+			if (old_pwd.length < 6 || new_pwd < 6) {
+				APP.remind('密码长度不能少于6位');
+				return;
+			}
+			if(new_pwd != con_pwd){
+				APP.remind('两次输入的密码比一致');
+				return;
+			}
+
+			var url = "/setPassword";
+			var data = {'password':old_pwd,'new_password':new_pwd};
+			data.token = localStorage.getItem('token');
+			data.user_id = localStorage.getItem('id');
+			Load.loadDataShow(0);
+			var timeout = setTimeout(function(){
+				LoadTimeout.remind('你的网络不给力。。');
+				Load.loadDataShow(1);
+			},5000);
+			AJAX.post(data, url, 'POST', function(res) {
+				clearTimeout(timeout);
+				Load.loadDataShow(1);
+				console.log(res);
+				if(res.code == 0){
+					APP.remind('修改成功');
+					setTimeout(function(){
+						window.location.href = 'login.html';
+					},1000);
+				}else{
+					APP.remind(res.msg);
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>商品详情</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link rel="stylesheet" type="text/css" href="css/flexslider.css" />
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/jquery.flexslider-min.js"></script>
+		<script type="text/javascript" src="js/app.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			/* pages/cbyxq/cbyxq.wxss */
+			.zsxqtop {
+				overflow: hidden;
+				position: relative
+			}
+
+			.zsxqswiper {
+				width: 100%;
+				height: 240px
+			}
+
+			.zsxqtop img {
+				width: auto;
+				height: 240px;
+				margin: 0 auto;
+			}
+
+			.zsxqwalk {
+				width: 70px;
+				height: 70px;
+				display: flex;
+				background: #2A94C6;
+				color: #fff;
+				z-index: 99;
+				border-radius: 50%;
+				box-shadow: 0 0 10px rgba(0, 0, 0, .45);
+				position: absolute;
+				right: 10px;
+				bottom: 10px
+			}
+
+			.cbyxq-tit {
+				width: 88%;
+				padding: 5px 6%;
+				background: #2A94C6;
+				color: #fff;
+				display: flex;
+				flex-direction: column
+			}
+
+			.cbyxq-tit .top {
+				border-bottom: 1px solid #fff;
+				line-height: 30px
+			}
+
+			.cbyxq-tit .bottom {
+				display: flex;
+				justify-content: space-between;
+				align-items: center
+			}
+
+			.cbyxq-tit .bleft {
+				height: 60px;
+				overflow: hidden
+			}
+
+			.cbyxq-tit .bright {
+				height: 50px;
+				padding-top: 10px
+			}
+
+			.cbyxq-tit .bright a {
+				display: flex;
+				flex-direction: column;
+				text-align: center;
+				align-items: center;
+				color: #fff;
+			}
+
+			.cbyxq-tit .bright img {
+				width: 20px;
+				height: 20px
+			}
+
+			.btn {
+				width: 90%;
+				padding: 10px 5%;
+				background: #fff;
+				border-top: 10px solid #f3f3f3;
+				display: inline-block;
+				line-height: 20px
+			}
+
+			.btn span {
+				float: left;
+				margin-right: 5px
+			}
+
+			.btn img {
+				width: 20px;
+				height: 20px;
+				float: right
+			}
+
+			.drawer_screen {
+				width: 100%;
+				height: 100%;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 99;
+				background: #000;
+				opacity: 0.2;
+				overflow: hidden;
+				display: none;
+				outline: none;
+				border: none;
+			}
+
+			.drawer_attr_box {
+				width: 100%;
+				overflow: hidden;
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				z-index: 100;
+				background: #fff;
+			}
+
+			.drawer_content {
+				padding: 10px 20px;
+				height: 235px;
+				overflow-y: scroll
+			}
+
+			.drawer_title {
+				padding: 10px;
+				font: 21px "microsoft yahei";
+				text-align: center
+			}
+
+			.line {
+				border-bottom: 1px solid #f8f8f8
+			}
+
+			.address {
+				width: 90%;
+				padding: 0px 5%;
+				background: #fff;
+				border-top: 10px solid #f3f3f3;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				line-height: 20px;
+				padding-bottom: 10px;
+				border-bottom: 10px solid #f3f3f3
+			}
+
+			.address span {
+				margin-right: 5px
+			}
+
+			.address img {
+				width: 20px;
+				height: 20px
+			}
+
+			.address div {
+				padding: 10px 0 0 0;
+				display: inline-block
+			}
+
+			.details {
+				display: flex;
+				flex-direction: column
+			}
+
+			.detailstit {
+				padding: 5px 5%;
+				width: 90%;
+				line-height: 20px;
+				justify-content: space-between;
+				display: flex
+			}
+
+			.detailstit img {
+				width: 20px;
+				height: 20px;
+				margin-right: 5px
+			}
+
+			.detailspic {
+				display: flex;
+				flex-direction: column
+			}
+
+			.detailspic img {
+				width: 100%
+			}
+
+			.free-radios {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap
+			}
+
+			.free-radio {
+				padding: 4px 15px;
+				font-size: 15px;
+				background: #fff;
+				border-radius: 5px;
+				margin: 15px 15px 0px 0;
+				border: 1px solid #E6E6E6;
+				display: inline-block;
+			}
+
+			.is_checked {
+				background: #2A94C6;
+				color: #fff
+			}
+
+			.address-radios {
+				display: flex;
+				flex-wrap: wrap
+			}
+
+			.address-radio {
+				border: 1px solid #E6E6E6;
+				width: 90%;
+				padding: 5px 5%;
+				font-size: 14px;
+				background: #fff;
+				border-radius: 5px;
+				margin: 10px 0 0 0
+			}
+
+			.address_checked {
+				background: #2A94C6;
+				border: 1px solid #2A94C6;
+				color: #fff
+			}
+
+			.items-num {
+				margin-top: 15px;
+				display: flex
+			}
+
+			.stepper {
+				width: 80px;
+				height: 26px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+				margin: 0 auto
+			}
+
+			.stepper span {
+				width: 19px;
+				line-height: 26px;
+				text-align: center;
+				float: left
+			}
+
+			.stepper input {
+				width: 40px;
+				height: 26px;
+				float: left;
+				margin: 0 auto;
+				text-align: center;
+				font-size: 12px;
+				border-left: 1px solid #ccc;
+				border-right: 1px solid #ccc
+			}
+
+			.stepper .normal {
+				color: #000
+			}
+
+			.stepper .disabled {
+				color: #ccc
+			}
+
+			.goshoping {
+				background: #2A94C6;
+				color: #fff;
+				width: 70%;
+				font-size: 17px;
+				line-height: 40px;
+				height: 40px;
+				margin: 30px 15% 10px 15%;
+				border: none;
+			}
+
+			.buybuttom {
+				position: fixed;
+				bottom: 0;
+				width: 100%;
+				background: #2A94C6;
+				color: #fff;
+				font-size: 19px;
+				line-height: 50px;
+				height: 50px;
+				display: block;
+				text-align: center
+			}
+
+			.add_address {
+				position: fixed;
+				width: 100%;
+				top: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.2);
+				z-index: 100;
+			}
+
+			.add_address .add_t {
+				width: 90%;
+				text-align: center;
+				position: fixed;
+				z-index: 102;
+				top: 31%;
+				font-size: 14px;
+				color: #696969;
+			}
+
+			.add_address .lists {
+				position: fixed;
+				background: white;
+				z-index: 101;
+				top: 30%;
+				bottom: 30%;
+				width: 90%;
+				left: 5%;
+				border-radius: 10px;
+				overflow: hidden;
+			}
+
+			.add_address .lists .li {
+				width: 90%;
+				height: 42px;
+				border-bottom: 1px solid #E6E6E6;
+				font-size: 14px;
+				margin-left: 5%;
+				line-height: 42px;
+			}
+
+			.add_address .lists .li:first-child {
+				margin-top: 40px;
+			}
+
+			.add_address .lists .li input {
+				display: inline-block;
+				width: 100%;
+				outline: none
+			}
+
+			.add_address .add_address,
+			.add_address .cancel_address {
+				display: inline-block;
+				display: inline-block;
+				width: 25%;
+				border: none;
+				outline: none;
+				color: white;
+				background: #2A94C6;
+				position: fixed;
+				top: 60%;
+				z-index: 102;
+				height: 28px;
+				border-radius: 5px;
+				left: 20%
+			}
+
+			.add_address .cancel_address {
+				background: #eeeeee;
+				color: #696969;
+				left: 56%;
+			}
+		</style>
+		<script type="text/javascript"></script>
+	</head>
+
+	<body>
+		<header>
+			<span class="header_left" onclick="returnClick()"></span>
+			<div class="header_title">商品详情</div>
+		</header>
+		<!--pages/cbyxq/cbyxq.wxml-->
+		<div class='container'>
+			<!--banner-->
+			<div id="main" class="zsxqtop">
+				<div class="flexslider zsxqswiper">
+					<ul class="slides" id="slides_img">
+						<!-- <li><img src="img/1a.jpg" /></li>
+            <li><img src="img/1b.jpg" /></li>
+            <li><img src="img/1c.jpg" /></li> -->
+					</ul>
+				</div>
+			</div>
+			<!--banner end-->
+			<!--<div class='zsxqtop'>
+      <swiper class='zsxqswiper' indicator-dots="true" autoplay="true" duration="1000" bindchange="listenSwiper" >
+      <swiper-item>
+      <div><img src='img/1a.jpg' mode='aspectFit'></div></swiper-item>
+      <swiper-item>
+      <div><img src='img/1b.jpg' mode='aspectFit'></div></swiper-item>
+      <swiper-item>
+      <div><img src='img/1c.jpg' mode='aspectFit'></div></swiper-item>    
+      </swiper>
+      </div>-->
+			<div class='cbyxq-tit'>
+				<div class='top'>
+					<span class='span-a'>￥</span>
+					<span class='span-c' style=' margin-right:10px; color:#FFF000;' id="price"></span>
+					<span class='span-a' style='text-decoration:line-through ;' id="cus_price"></span>
+				</div>
+				<div class='bottom'>
+					<div class='bleft'>
+						<span class='span-d' id="shop_title"></span>
+					</div>
+					<div class='bright'>
+						<a href=''>
+							<img src='img/share.png' mode='aspectFit'>
+							<span class='span-d'>分享</span></a>
+					</div>
+				</div>
+			</div>
+			<!--button-->
+			<!-- <div class="btn" data-statu="open" onclick="selClass()">
+      <span class='span-a span-colb'>选择：</span>
+      <span class='span-d span-colc'>选择分类</span>
+      <img src='img/next.png'  mode='aspectFit'></div> -->
+			<div class='address' onclick="chooseAddress()">
+				<div class='flex'>
+					<span class='span-a span-colb'>送至：</span>
+					<span class='span-d span-colc' id="address_show">请选择收货信息</span></div>
+				<div>
+					<img src='img/next.png' mode='aspectFit'></div>
+			</div>
+			<div class='details'>
+				<div class='detailstit'>
+					<span class='span-d span-colb'>-----------------</span>
+					<div class='flex' style=''>
+						<img src='img/pic.png' mode='aspectFit'>
+						<span class='span-a span-colb'>图文详情</span></div>
+					<span class='span-d span-colb'>-----------------</span>
+				</div>
+				<div class='detailspic' id="detailspic">
+					<!-- <img src='img/1b.jpg' mode='widthFix'>
+          <img src='img/1c.jpg'  mode='widthFix'>
+          <img src='img/1d.jpg'  mode='widthFix'> -->
+				</div>
+			</div>
+			<!--mask-->
+			<div class="drawer_screen class_drawer_screen" onclick="hiddenBg()"></div>
+			<!--content-->
+			<!--使用animation属性指定需要执行的动画-->
+			<div class="drawer_attr_box ">
+				<!--drawer content-->
+				<div class="drawer_content class_drawer_attr_box" style="display: none">
+					<span class='span-d span-cold'>请选择以下类别:(点击选择)</span>
+					<div class='free-radios' id="free_radios_type">
+						<!-- <button class="free-radio ">白色</button>
+            <button  class="free-radio ">白色</button>
+            <button  class="free-radio " >白色</button>
+            <button class="free-radio " >白色</button>
+            <button class="free-radio " >白色</button>
+            <button  class="free-radio ">白色</button> -->
+					</div>
+
+					<!-- <radio-group class='free-radios' bindchange="checkChange">
+          <label wx:for="{{items}}" wx:key="{{items}}"
+          class="free-radio {{item.checked?'is_checked':''}}">
+          <radio value="{{item.name}}" name="{{item.value}}" 
+          checked="{{item.checked}}" hidden='true'></radio>
+          <label class="free-span">{{item.value}}</label></label>
+          </radio-group> -->
+					<div class='items-num'>
+						<span class='span-d span-cold'>数量:</span>
+						<!-- 主容器 -->
+						<div class="stepper">
+							<!-- 减号 -->
+							<span class="{{minusStatus}}" onclick="subVal()">-</span>
+							<!-- 数值 -->
+							<input type="number" id="num_val" value="1" />
+							<!-- 加号 -->
+							<span class="normal" onclick="addVal()">+</span></div>
+					</div>
+
+					<button class='goshoping' onclick="submit()">我想要</button>
+					<!-- </div>-->
+				</div>
+				<!--mask-->
+				<!-- <div class="drawer_screen address_drawer_screen" onclick="choseAddressBg()" data-statu="close" wx:if="{{showAddressStatus}}"></div> -->
+				<!--content-->
+				<!--使用animation属性指定需要执行的动画-->
+				<div class="drawer_attr_box address_drawer_attr_box" style="display: none">
+					<div class="drawer_content">
+						<span class='span-d span-cold'>请选择收货地址:(点击选择)</span>
+						<radio-group class='address-radios' id="address_list"></radio-group>
+						<button class='goshoping' onclick="addAddressClick()">添加收货地址</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="add_address" style="display: none;">
+				<div class="add_t">收货地址</div>
+				<ul class="lists">
+					<li class="li">
+						<input type="text" id="address" name="address" placeholder="请输入地址"></li>
+					<li class="li">
+						<input type="text" id="name" name="address" placeholder="请输入姓名"></li>
+					<li class="li">
+						<input type="text" id="phone" name="address" placeholder="请输入手机号码"></li>
+				</ul>
+				<button class="add_address" onclick='addressConfirm()'>确认</button>
+				<button class="cancel_address" onclick="addressCancel()">取消</button>
+			</div>
+
+			<!-- <a href='cbydd.html' style='position: fixed; bottom: 50px; width: 100%; height:50px;'>下一页</a> -->
+
+			<div class='buybuttom' onclick="submit()">我想要</div>
+		</div>
+	</body>
+</html>
+<script type="text/javascript">
+	var val = 1;
+	var classType = '';
+	var address = '';
+
+	function returnClick() {
+		window.history.go(-1);
+	}
+
+	function selClass() {
+		$('.class_drawer_screen').css('display', 'block');
+		$('.class_drawer_attr_box').css('display', 'block');
+	}
+
+	function hiddenBg() {
+		$('.class_drawer_screen').css('display', 'none');
+		$('.class_drawer_attr_box').css('display', 'none');
+	}
+
+	$('body').delegate('.free-radio', 'click',
+		function() {
+			$('.free-radio').removeClass('is_checked');
+			$(this).addClass('is_checked');
+			classType = $(this).text();
+		});
+
+	function subVal() {
+		val = $('#num_val').val();
+		val--;
+		if (val < 0) {
+			val = 0;
+			$('#num_val').val(0)
+		} else {
+			$('#num_val').val(val)
+		}
+	}
+
+	function addVal() {
+		val = $('#num_val').val();
+		val++;
+		$('#num_val').val(val);
+	}
+
+	function chooseAddress() {
+		/* $('.address_drawer_screen').css('display','block'); */
+		$('.address_drawer_attr_box').css('display', 'block');
+	}
+
+	function choseAddressBg() {
+		/* $('.address_drawer_screen').css('display','none'); */
+		$('.address_drawer_attr_box').css('display', 'none');
+	}
+
+	function getAddressList() { // 获取地址列表
+		var url = "/getUserAddress  ";
+		var data = {};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		AJAX.post(data, url, 'POST',
+			function(res) {
+				console.log(res.data[0].tel);
+				if (res.code == 0) {
+					var _html = '';
+					for (var s in res.data) {
+						_html += '<label data-tel="' + res.data[s].tel + '" data-name="' + res.data[s].name +
+							'" class="address-radio"><label class="free-span">' + res.data[s].address + ' - ' + res.data[s].tel +
+							'</label></label>'
+					};
+					/* for(var s of res.data){
+					    _html += '<label data-tel="'+s.tel+'" data-name="'+s.name+'" class="address-radio"><label class="free-span">'+s.address+'</label></label>'
+					  } */
+					$('#address_list').html(_html);
+				} else {
+					APP.remind(res.msg);
+				}
+			});
+	}
+	getAddressList();
+	$('body').delegate('.address-radio', 'click',
+		function() { //选择地址
+			$('#address_show').text($(this).text()).attr('data-id', $(this).attr('data-id'));
+			address = $(this).text();
+			localStorage.setItem("address", $(this).text());
+			localStorage.setItem("address_tel", $(this).attr('data-tel'));
+			localStorage.setItem("address_name", $(this).attr('data-name'));
+			/* $('.address_drawer_screen').css('display','none'); */
+			$('.address_drawer_attr_box').css('display', 'none');
+		});
+
+	function addAddressClick() {
+		$('.add_address').css('display', 'block');
+	}
+
+	function addressCancel() {
+		$('.add_address').css('display', 'none');
+	}
+
+	function addressConfirm() { // 添加地址
+		//$('.add_address').css('display','none');
+		var address = $('#address').val();
+		var name = $('#name').val();
+		var phone = $('#phone').val();
+		if (address.length == 0) {
+			APP.remind("请输入地址");
+			return false;
+		}
+		if (name.length == 0) {
+			APP.remind("请输入收件人姓名");
+			return false;
+		}
+		if (!(/^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(phone))) {
+			APP.remind("手机号码输入错误");
+			return false;
+		}
+		var url = "/setUserAddress  ";
+		var data = {
+			'address': address,
+			'name': name,
+			'tel': phone
+		};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		AJAX.post(data, url, 'POST',
+			function(res) {
+				console.log(res);
+				if (res.code == 0) {
+					$('.add_address').css('display', 'none');
+					APP.remind("添加成功");
+					getAddressList();
+				} else {
+					APP.remind(res.msg);
+				}
+			});
+	}
+
+	function submit() {
+		if (val != 0 && classType.length != 0) {
+			$('.class_drawer_screen').css('display', 'none');
+			$('.class_drawer_attr_box').css('display', 'none');
+			if (address.length != 0) {
+				window.location.href = 'cbydd.html';
+				localStorage.setItem("classType", classType);
+				localStorage.setItem("shopNumber", val);
+			} else {
+				/* $('.address_drawer_screen').css('display','block'); */
+				$('.address_drawer_attr_box').css('display', 'block');
+			}
+
+		} else {
+			if (val == 0) {
+				APP.remind("数量不能为0");
+			} else if (classType.length == 0) {
+				APP.remind("请选择类型");
+			}
+
+			$('.class_drawer_screen').css('display', 'block');
+			$('.class_drawer_attr_box').css('display', 'block');
+		}
+	}
+
+	function getShopDetailData() {
+		var id = window.location.href.split('?')[1].split('=')[1];
+		localStorage.setItem("shopId", id);
+		var url = "/getShopDetail";
+		var data = {};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		data.id = id;
+
+		AJAX.post(data, url, 'POST',
+			function(res) {
+				console.log(res);
+				if (res.code == 0) {
+					initShopDetal(res);
+				} else {
+
+				}
+			});
+	}
+	getShopDetailData();
+
+	function initShopDetal(res) {
+		var _html = '';
+		var shopType = res.data.shop_type.split(',');
+		for (var i in shopType) {
+			_html += ' <button class="free-radio " >' + shopType[i] + '</button>';
+		};
+		/* for(var i of shopType){
+		        _html+= ' <button class="free-radio " >'+i+'</button>';
+		      } */
+		$('#free_radios_type').html(_html);
+
+		var img_html = '';
+		for (var item in res.data.pic) {
+			img_html += '<li><img src="' + res.data.pic[item] + '" /></li>';
+		};
+		/* for(var item of res.data.pic){
+		        img_html+= '<li><img src="'+item+'" /></li>';
+		      } */
+		$('#slides_img').html(img_html);
+
+		$(".flexslider").flexslider({
+			slideshowSpeed: 4000,
+			//展示时间间隔ms
+			animationSpeed: 400,
+			//滚动时间ms
+			touch: true,
+			//是否支持触屏滑动
+			keyboard: true //是否支持触屏滑
+		});
+
+		$("#detailspic").html(res.data.shop_detail);
+		$("#price").html(res.data.shop_price / 100);
+		$("#cus_price").html(res.data.shop_old_price / 100);
+		$("#shop_title").html(res.data.shop_title);
+
+		localStorage.setItem("pic", res.data.pic[0]);
+		localStorage.setItem("price", res.data.shop_price / 100);
+		localStorage.setItem("shop_title", res.data.shop_title);
+	}
+</script>

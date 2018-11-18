@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>基本信息</title><link rel="stylesheet" type="text/css" href="css/app.css"/><script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="js/md5.js" ></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			.ysform{padding: 30px 20%;width: 60%; display: flex;flex-direction: column;}
+.itemdiv{border-bottom:1px solid #E6E6E6; margin-top: 25px;display: flex; font-size: 15px;color: #555;}
+.itemdiv span{font-size: 15px;color: #555;line-height: 23.5px;white-space:nowrap;}
+.ysinput{font-size: 15px; color: #555;outline: none}
+.itemdiv radio-group{display: flex;}
+.itemdiv radio-group radio{ padding-right:15px;}
+.itemdiv .icon{ display: inline-block;width: 15px;height: 15px;border: 1px solid #ccc;border-radius: 50%; margin-right: 4px;vertical-align: middle;}
+.itemdiv .icon.active{ background: url(./img/radio.png) no-repeat; background-size: 100% 100%;  }
+.formsub{ background: #2A94C6; color: #fff; border-radius: 4px; margin-top: 40px; height: 40px; line-height: 40px; width: 60%;margin-left: 20%;border: none;outline: none}
+
+		</style>
+	</head>
+	<body>
+		<header>
+      <span class="header_left" onclick="returnClick()"></span>
+      <div class="header_title">录入信息</div>  
+    </header>
+		  <div class='ysxqhead'>
+    <div class='ysxqhead-pic'>
+      <img src='{{ysxq.doctor_pic}}' id="val_6" mode='aspectFit'>
+    </div>
+    <div class='ysxqhead-span'>
+      <span class='span-c' style=' margin-bottom:10px;' id="val_1"></span>
+      <span class='span-f' style=' margin-bottom:2.5px;' id="val_2"></span>
+      <span class='span-f' id="val_3"></span>
+    </div>
+  </div>
+
+  <div class='container'>
+    <form  class='ysform'>
+      <div class="itemdiv">
+        <span>姓名：</span>
+        <input id="name" class="ysinput" data-key= "name" name="name" placeholder="请输入您的姓名" bindinput ="bindKeyInput"/>
+      </div>
+      <div class="itemdiv">
+        <span>年龄：</span>
+        <input id="age" class="ysinput" data-key= "age" name="age" type="number" placeholder="请输入您的年龄"  bindinput ="bindKeyInput"/>
+      </div>
+      <div class="itemdiv" style='border:none;'>
+        <span>性别：</span>
+        <radio-group data-key= "sex" bindchange="bindKeyInput">
+          <span class="icon active" onclick="sexClick('男')"></span><radio value="男" checked onclick="sexClick('男')">男</radio>
+          <span class="icon" onclick="sexClick('女')"></span><radio value="女" onclick="sexClick('女')">女</radio>
+        </radio-group>
+      </div>
+      <div class="itemdiv">
+        <span>身高：</span>
+        <input id="height" class="ysinput" data-key= "height" name="height" placeholder="请输入您的身高(厘米)"  bindinput ="bindKeyInput"/>
+      </div>
+      <div class="itemdiv">
+        <span>体重：</span>
+        <input id="weight" class="ysinput" data-key= "weight" name="weight" placeholder="请输入您的体重(公斤)"  bindinput ="bindKeyInput"/>
+      </div>
+      <div class="itemdiv">
+        <span>电话：</span>
+        <input id="tel" class="ysinput" data-key= "tel" name="tel" type="number" placeholder="请输入您的联系方式"  bindinput ="bindKeyInput"/>
+      </div>
+
+      
+    </form>
+    <button type="blue" class="formsub" onclick="submit()" >下一步</button>
+  </div>
+		
+	</body>
+</html>
+
+<script type="text/javascript">
+  function returnClick(){
+     window.history.go(-1);
+   }
+
+
+  var sex = "男";
+  function sexClick(text) { // 性别选择点击按钮
+    var sexList = document.getElementsByClassName('icon');
+    sexList[0].classList.remove('active');
+    sexList[1].classList.remove('active');
+    if(text=='男'){
+      sexList[0].classList.add('active');
+    }else{
+      sexList[1].classList.add('active');
+    }
+    sex = text;
+  }
+
+	var id = window.location.href.split('?')[1].split('=')[1];
+  function getDoctorDetail(){
+    var url = "/getDoctorDetail";
+    var data = {'id':id};
+    data.token = localStorage.getItem('token');
+    data.user_id = localStorage.getItem('id');
+   
+    AJAX.post(data,url,'POST',function(res) {
+      console.log(res);
+      if(res.code == 0){
+          document.getElementById('val_6').setAttribute('src',res.data.doctor_pic);
+          document.getElementById('val_1').innerHTML = res.data.doctor_name;
+          document.getElementById('val_2').innerHTML = res.data.doctor_exp+"年养生理疗经验";
+          document.getElementById('val_3').innerHTML = '康复人数'+res.data.num+'余例';
+
+      }else{
+
+      }
+    });
+  }
+  getDoctorDetail();
+
+  // 点击下一步 
+  function submit(){
+    var name = document.getElementById('name').value;
+    var age = document.getElementById('age').value;
+    var height = document.getElementById('height').value;
+    var weight = document.getElementById('weight').value;
+    var tel = document.getElementById('tel').value;
+    if(name.length == 0){
+       APP.remind("请输入姓名");
+       return;
+    }
+    if(age.length == 0){
+       APP.remind("请输入年龄");
+       return;
+    }
+    if(height.length == 0){
+       APP.remind("请输入身高");
+       return;
+    }
+    if(weight.length == 0){
+       APP.remind("请输入体重");
+       return;
+    }
+    if(tel.length != 11){
+       APP.remind("号码输入错误");
+       return;
+    }
+    var data = {};
+    data.name = name;
+    data.age = age;
+    data.height = height;
+    data.weight = weight;
+    data.tel = tel;
+    data.sex = sex;
+    localStorage.setItem('data',JSON.stringify(data));
+    window.location.href = './yszd2.html?id='+id;
+
+  } 
+
+</script>

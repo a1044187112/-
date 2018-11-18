@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>等待医生诊断</title><link rel="stylesheet" type="text/css" href="css/app.css"/><script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			/* pages/yszd4/yszd4.wxss */
+.zdz{ display: flex; flex-direction: column; width: 100%; padding-top:30px; }
+.zdz img{width:225px; height:298px; margin: 0 auto;}
+.zdz-span{display: flex; flex-direction: column; width: 100%; align-items: center; margin-top: 30px;}
+
+.formsub{ background: #2A94C6; color: #fff; border-radius: 4px; height: 40px; line-height: 40px; margin:50px auto; width: 160px;border: none;text-align: center;}
+		</style>
+	</head>
+	<body>
+		
+		<!--pages/yszd4/yszd4.wxml-->
+<div class='container'>
+  <div class='zdz'>
+     <img src='img/zdz.png'  mode='aspectFit'>
+  </div>
+  <div class='zdz-span'>
+    <span class='span-e span-colc'>已提交问题，请稍等片刻</span>
+    <span class='span-d span-colb' style="margin-top: 10px;">可能需要60秒左右</span>
+  </div>
+  <a href="zd.html?id=1"  class='formsub'>返回我的问题</a>
+
+  <!-- <a href='pages/zd/zd' class='flex navwidth' style='margin-top:25px; height:25px;'>查看结果</a> -->
+</div>
+
+		
+	</body>
+</html>

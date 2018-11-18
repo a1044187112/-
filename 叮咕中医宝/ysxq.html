@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>医生详情</title><link rel="stylesheet" type="text/css" href="css/app.css"/><script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="js/md5.js" ></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			.ysxqcon{ padding:5px 5% 10px 5%; display: flex; flex-direction: column; border-bottom:10px solid #F4F4F4; }
+.ysxqyt{border-bottom:1px solid #E6E6E6; margin-bottom:9px; white-space: nowrap;}
+.ysxqyt span{ line-height: 40px; font-size: 16px; }
+.ysxqend{position: fixed; bottom: 0px; width: 100%; height: 50px; line-height: 50px; font-size: 16px; color: #fff; background: #2A94C6;text-align: center;}
+		</style>
+	</head>
+	<body>
+		<header>
+      <span class="header_left" onclick="returnClick()"></span>
+      <div class="header_title">医生介绍</div>  
+    </header>
+		  <div class='ysxqhead'>
+    <div class='ysxqhead-pic'>
+      <img id="val_6" src='{{ysxq.doctor_pic}}' mode='aspectFit'>
+    </div>
+    <div class='ysxqhead-span'>
+      <span class='span-c' style=' margin-bottom:10px;' id="val_1"></span>
+      <span class='span-f' style=' margin-bottom:2.5px;' id="val_2"></span>
+      <span class='span-f' id="val_3"></span>
+    </div>
+  </div>
+  <div class='container'>
+    <div class='ysxqcon'>
+      <div class='ysxqyt'><span class='span-cola span-d'>擅长：</span></div>
+      <span class='span-a span-cold' style='line-height:22px;' id="val_4"></span>
+    </div>
+    <div class='ysxqcon' style='border:none;'>
+      <div class='ysxqyt'><span class='span-cola'>介绍：</span></div>
+      <span class='span-a span-cold' style='line-height:22px;' id="val_5"></span>
+    </div>
+    
+    <a href='pages/yszd1/yszd1?id={{ysxq.id}}' id="val_7" class='ysxqend'>解惑问答</a>
+  </div>
+		
+	</body>
+</html>
+
+<script type="text/javascript">
+  function returnClick(){
+     window.history.go(-1);
+   }
+   document.addEventListener("plusready", function() {
+        // 注册返回按键事件
+        plus.key.addEventListener('backbutton', function() {
+        // 事件处理
+           window.history.go(-1);
+        }, false);
+    });
+
+	var id = window.location.href.split('?')[1].split('=')[1];
+  function getDoctorDetail(){
+    Load.loadDataShow(0);
+    var url = "/getDoctorDetail";
+    var data = {'id':id};
+   data.token = localStorage.getItem('token');
+    data.user_id = localStorage.getItem('id');
+    AJAX.post(data,url,'POST',function(res) {
+      Load.loadDataShow(1);
+      console.log(res);
+      if(res.code == 0){
+          document.getElementById('val_6').setAttribute('src',res.data.doctor_pic);
+          document.getElementById('val_1').innerHTML = res.data.doctor_name;
+          document.getElementById('val_2').innerHTML = res.data.doctor_exp+"年养生理疗经验";
+          document.getElementById('val_3').innerHTML = '康复人数'+res.data.num+'余例';
+          document.getElementById('val_4').innerHTML = res.data.skill+'等';
+          document.getElementById('val_5').innerHTML = res.data.introduction;
+          document.getElementById('val_7').setAttribute('href','./yszd1.html?id='+res.data.id);
+
+      }else{
+
+      }
+    });
+  }
+  getDoctorDetail();
+</script>

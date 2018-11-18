@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>订单</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			.li{
+				display: flex;display: -webkit-flex;
+				border-bottom: 1px solid #e6e6e6;
+				padding: 14px 0;
+				width: 100%;
+			}
+			.li .item:first-child{
+				width: 20%;
+				vertical-align: top;
+			}
+			.li .item img{
+				width: 100%;border-radius: 5px;margin-left: 15px;width: 60px;height: 60px;
+			}
+			.li .item:nth-child(2){
+				margin-left: 10px;
+				line-height: 22px;
+				width: 90%;
+			}
+			.li .item:nth-child(2) .desc{
+				line-height: 18px;font-size: 13px;padding-right: 15px;
+				 overflow: hidden;
+			    display: -webkit-box;
+			    -webkit-line-clamp: 2;
+			    -webkit-box-orient: vertical;
+			    word-break: break-all;
+			    padding: 4px 0;
+
+			}
+			.li .item:nth-child(2) .item_i span{
+				font-size: 13px;
+			}
+			.li .item:nth-child(2) .item_i span:nth-child(2){
+				color: #f33;float: right;
+				margin-right: 15px;font-size: 14px; 
+				margin-top: 2px;margin-left: 20%;
+
+			}
+		</style>
+	</head>
+	<body onscroll="scrollLoadData()">
+		<header>
+			<span class="header_left" onclick="returnClick()"></span>
+			<div class="header_title">我的订单</div>
+		</header>
+		<ul class='lists' id="lists">
+			<!-- <a class="li" href="#">
+				<div class="item">
+					<img src="./img/hp.jpeg">
+				</div>
+				<div class="item">
+					<div class="name">小王</div>
+					<div class="desc">病情描述：头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热</div>
+					<div class="item_i">
+						<span>订单号：5674523686586</span>
+						<span>￥88.00</span>
+					</div>
+				</div>
+			</a> -->
+			<!-- <a class="li" href="#">
+				<div class="item">
+					<img src="./img/hp.jpeg">
+				</div>
+				<div class="item">
+					<div class="name">小王</div>
+					<div class="desc">病情描述：头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热头痛发热</div>
+					<div class="item_i">
+						<span>订单号：5674523686586</span>
+						<span>￥88.00</span>
+					</div>
+				</div>
+			</a> -->
+		</ul>
+	</body>
+</html>
+
+
+<script type="text/javascript">
+	//订单状态 0：未处理 1：已关闭 2：已发货 3：已完成'
+	var page = 1;
+
+	document.addEventListener("plusready", function() {
+        // 注册返回按键事件
+        plus.key.addEventListener('backbutton', function() {
+	       	window.history.go(-1);
+        }, false);
+    });
+	function returnClick() {
+		window.history.go(-1);
+	}
+
+	/**
+     * 获取咨询订单列表
+     * @post limit 每页显示数量
+     * @post page 当前页数
+     */
+	function getConsultOrderList(n) {
+		var url = '/getConsultOrderList';
+		var data = {
+			'limit': 20,
+			"page": page
+		};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		var timeout = setTimeout(function(){
+			LoadTimeout.remind('你的网络不给力。。');
+			Load.loadDataShow(1);
+		},5000);
+		Load.loadDataShow(0);
+		AJAX.post(data, url, 'POST', function(res) {
+			Load.loadDataShow(1);
+			clearTimeout(timeout);
+			console.log(res);
+			if (res.code == 0) {
+				var _html = '',data = res.data.data;
+				for(var i = 0 ; i < data.length ; i++){
+					var time = timestampToTime(data[i].pay_time);
+					_html += '<a class="li" href="zd.html?id='+data[i].id+'">'+
+				'<div class="item"><img src="'+data[i].doctor_pic+'"/></div>'+
+				'<div class="item"><div class="name">'+data[i].doctor_name+'</div>'+
+					'<div class="desc">病情描述：'+data[i].description+'</div>'+
+					'<div class="item_i"><span>'+time+'</span><span>￥'+data[i].price/100+'</span></div>'+
+				'</div></a>';
+				}
+				page == 1?$('#lists').html(_html):$('#lists').append(_html)
+			} else {
+				APP.remind(res.msg);
+			}
+		});
+	}
+	getConsultOrderList(0);
+
+	
+
+
+
+
+	function scrollLoadData() { // 上拉加载
+		var innerHeight = window.innerHeight;
+		var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+		var height = document.body.scrollHeight;
+		if (height - (innerHeight + scrollTop) < 2) { // 更新数据
+			page++;
+			getTypeData(document.querySelector('.order-nav div.active').getAttribute('data-id'));
+		}
+	}
+
+	function timestampToTime(timestamp) {
+		var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+		D = change(date.getDate()) + ' ';
+		h = change(date.getHours()) + ':';
+		m = change(date.getMinutes()) + ':';
+		s = change(date.getSeconds());
+		return Y + M + D + h + m + s;
+	}
+
+	function change(t) {
+		if (t < 10) {
+			return "0" + t;
+		} else {
+			return t;
+		}
+	}
+</script>

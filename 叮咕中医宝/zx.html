@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+
+		<script type="text/javascript" src="js/app.js" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			/* pages/zx/zx.wxss */
+			body {
+				padding-bottom: 80px;
+			}
+
+			.zxbox {
+				display: flex;
+				padding: 10px 5% 10px 0%;
+				margin-left: 5%;
+				width: 90%;
+				border-bottom: 1px solid #f1f1f1;
+				justify-content: space-between;
+			}
+
+			.zxb-l {
+				display: flex;
+				flex-direction: row;
+				align-items: flex-start;
+			}
+
+			.zxbox-l {
+				width: 50px;
+				height: 50px;
+			}
+
+			.zxbox-l img {
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+			}
+
+			.zxbox-m {
+				padding-left: 15px;
+				line-height: 26px;
+			}
+			.zxbox-m .span-cola{
+				font-size: 16px;
+			}
+
+			.zxbox-m a {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			.zxbox-r {
+				margin-left: 10px;
+				width: 80px;
+			}
+
+			.zxbox-r a {
+				display: flex;
+				flex-direction: column;
+				flex-wrap: wrap;
+			}
+			.num {
+				margin-top: 10px;
+				text-align: center;
+				border-radius: 4px;
+				color: #fff;
+				background: #E51C23;
+				padding: 0 2px;
+				font-size: 12px;
+				display: block;
+				height: 24px;
+				line-height: 24px;
+			}
+			.no_info{
+				padding-top: 40%;
+				text-align: center;
+				font-size: 14px;
+			}
+			.no_info img{
+				width: 25%;
+				margin-bottom: 4px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="no_info" id="no_info" style="display: none">
+			<img src="./img/404.png">
+			<div>你还没有咨询内容哦！</div>
+		</div>
+		<!--pages/zx/zx.wxml-->
+		<div class='container' id="container">
+			<!-- <div class='zxbox'>
+		        <div class='zxb-l'>
+		          <div class='zxbox-l'>
+		            <img src='img/headpic.png' mode='aspectFit'></div>
+		          <div class='zxbox-m'>
+		            <a href='zd.html' class='navwidth flex'>
+		              <span class='span-c span-cola'>王德明</span>
+		              <span class='span-a span-cold'>小吃街我发你小吃街我发你小吃街我发你小吃街我发你</span>
+		              <span class='span-a span-cold'>问题：小雏菊普看...</span></a>
+		          </div>
+		        </div>
+		        <div class='zxbox-r'>
+		          <a href='ly.html' class='navwidth flex'>
+		            <span class='span-a span-colb'>查看留言</span>
+		            <span class='num'>99+</span></a>
+		        </div>
+	      </div> -->
+		</div>
+		<div class="tabbar">
+				<a href="./index.html">
+					<img src="img/home.png" />
+					<p>首页</p>
+				</a>
+				<a href="javascript:;">
+					<img src="img/consulting-hover.png" />
+					<p>问答</p>
+				</a>
+				<a href="./cby.html">
+					<img src="img/medicinebox.png" />
+					<p>常备药</p>
+				</a>
+				<a href="./my.html">
+					<img src="img/my.png" />
+					<p>个人中心</p>
+				</a>
+			</div>
+	</body>
+	<script type="text/javascript">
+		var page = 1;
+		document.addEventListener("plusready", function() {
+        // 注册返回按键事件
+        plus.key.addEventListener('backbutton', function() {
+        // 事件处理
+            // plus.nativeUI.confirm("退出程序？", function(event) {
+            //     if (event.index) {
+                    plus.runtime.quit();
+            //     }
+            // }, null,  ["确定","取消"]);
+        }, false);
+    });
+
+	// * 获取咨询列表
+ //     * @post limit 每页显示数量
+ //     * @post page 当前页数
+ //     * ～@post type 返回咨询类型 0：全部 1：未回复 2：已完成 3：已回复
+	function initDataList(){
+		var arr = [' 答疑中','已完成',' 答疑中']; //0：未回复 1：已完成 2：已回复
+		var url = "/getConsultList";
+		var data = {'limit': 20,'page': page};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		data.type = 0;
+		
+		var timeout = setTimeout(function(){
+			LoadTimeout.remind('你的网络不给力。。');
+			Load.loadDataShow(1);
+		},5000);
+		AJAX.post(data, url, 'POST', function(res) {
+			clearTimeout(timeout);
+			Load.loadDataShow(1);
+			console.log(res);
+			var _html = '';
+			res.data.data.length==0?$('#no_info').css('display','block'):$('#no_info').css('display','none');
+			for(var i = 0 ; i < res.data.data.length ; i++){
+				_html += "<div class='zxbox'>"+
+				        "<div class='zxb-l'>"+
+				          "<div class='zxbox-l'>"+
+				            "<img src='"+res.data.data[i].doctor_pic+"' mode='aspectFit'></div>"+
+				          "<div class='zxbox-m'>"+
+				            "<a href='zd.html?id="+res.data.data[i].id+"' class='navwidth flex'>"+
+				              "<span class='span-c span-cola'>"+res.data.data[i].doctor_name+"</span>"+
+				              "<span class='span-a span-cold'>"+res.data.data[i].description+"</span>"+
+				              "<span class='span-a span-cold'>"+arr[res.data.data[i].status]+"</span></a>"+
+				          "</div>"+
+				        "</div>"+
+				        "<div onclick='returnInfo(\""+res.data.data[i].id+"\",\""+res.data.data[i].doctor_name+"\",\""+res.data.data[i].doctor_pic+"\")' class='zxbox-r>"+
+				          "<div href='ly.html?id="+res.data.data[i].id+"' class='navwidth flex'>"+
+				            "<span class='span-a span-colb'>查看回复</span>";
+				            if(res.data.data[i].unread != 0){
+				            	_html +=  "<span class='num'>"+res.data.data[i].unread+"</span>";
+				            }
+				        _html += "</div></div></div>";
+			}
+			page==1?$('#container').html(_html):$('#container').append(_html);;
+		});
+	}	
+	Load.loadDataShow(0);
+	initDataList();
+
+	setInterval(function(){
+		initDataList();
+	},5000);
+
+	function returnInfo(id,doctor_name,doctor_pic){
+		localStorage.setItem('doctor_name',doctor_name);
+        localStorage.setItem('doctor_pic',doctor_pic);
+		window.location.href = "ly.html?id="+id;
+	}
+	</script>
+</html>

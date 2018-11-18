@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>常备药</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="js/md5.js" ></script>
+    <script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+    <script type="text/javascript" src="js/ajax.js"></script>
+
+    <!--   下拉刷新 上拉加载 -->
+    <link rel="stylesheet" href="./js/refresher/css/pullToRefresh.css" />
+    <script src="./js/refresher/js/iscroll.js"></script>
+    <script src="./js/refresher/js/pullToRefresh.js"></script>
+
+		<style type="text/css">
+			/* pages/cby/cby.wxss */
+body{
+  padding-bottom: 80px;
+}
+.zs-top{ line-height: 40px; height: 40px; border-bottom: 1px solid #E6E6E6; width: 100%; overflow:  hidden; display: flex;}
+.zs-top span{ padding:0 25px; display: flex}
+.zs-top .flex.active{background: rgb(42,148,198);}
+.zs-top .flex.active span{color: white;}
+.cbylist{flex-wrap: wrap;flex-direction: row;display: flex;display: -webkit-flex;}
+.cbylistl{width:100%;display: flex;display: -webkit-flex; background: #eee; margin-bottom:4px; margin-right: 1%;}
+.cbylistr{width:100%;display: flex;display: -webkit-flex; background: #eee; margin-bottom:4px;}
+.cbylistl>.link{display: flex;flex-direction: column; padding: 10px; width: 48%;background:#fff;}
+.cbylistl>.link:nth-child(2n-1){ border-right: 2px solid #eee; }
+.cbylistl>.link:nth-child(2n){ border-left: 2px solid #eee; }
+.cbylistl .pic{height: 200px; width: 100%; overflow: hidden;}
+.cbylistl .pic img{ height: 200px; width: 100%;overflow: hidden;}
+.cbylistl>.tittle{ height: 40px; line-height: 17px; overflow: hidden; text-overflow: ellipsis; margin-bottom: 10px;}
+.cbylistl>.gold{margin-bottom: 5px;}
+
+.cbylistr>.link{display: flex;flex-direction: column; padding: 10px; background:#fff;}
+.cbylistr .pic{height: 200px; width: 100%; overflow: hidden;}
+.cbylistr .pic img{ height: 200px; width: 100%;}
+.cbylistr>.tittle{ height: 40px; line-height: 17px; overflow: hidden; text-overflow: ellipsis; margin-bottom: 10px;}
+.cbylistr>.gold{margin-bottom: 5px;}
+.cbylistr>.link:nth-child(2n-1){ border-right: 2px solid #eee; }
+.cbylistr>.link:nth-child(2n){ border-left: 2px solid #eee; }
+		</style>
+	</head>
+	<body>
+		<!--pages/cby/cby.wxml-->
+<div class='zs-top'>
+  <a class='flex active' data-id="0">
+    <span class='span-d span-cola' onclick="tabClick(0)">热门</span>
+  </a>
+  <a class='flex' data-id="1">
+    <span class='span-d span-cola' onclick="tabClick(1)">销量</span>
+  </a>
+  <a class='flex' data-id="2">
+    <span class='span-d span-cola' onclick="tabClick(2)">最新</span>
+  </a>
+</div>
+<div class='container' style='background:#F4F4F4;'>
+<div class='cbylist' >
+  <div id="wrapper">
+      <ul id='jb_nav'>
+         <!-- <li class='cbylistl'>
+            <a href='cbyxq.html' class='flex link'>
+              <div class='pic'>
+                <img src='img/1a.jpg' mode='aspectFit'>
+              </div>
+              <div class='tittle'>
+                <span class='span-d span-colc'>竹炭牙刷成人软毛家用小头舒客舒克原木牙刷2支*1盒包邮</span>
+              </div>
+              <div class='gold'>
+                <span class='span-e span-cole' style='float:left'>￥198/件</span>
+                <span class='span-b span-cold' style='float:right; margin-top:6.5px;'>销量：165</span>
+              </div>
+            </a>
+            <a href='cbyxq.html' class='flex link'>
+              <div class='pic'>
+                <img src='img/1a.jpg' mode='aspectFit'>
+              </div>
+              <div class='tittle'>
+                <span class='span-d span-colc'>竹炭牙刷成人软毛家用小头舒客舒克原木牙刷2支*1盒包邮</span>
+              </div>
+              <div class='gold'>
+                <span class='span-e span-cole' style='float:left'>￥198/件</span>
+                <span class='span-b span-cold' style='float:right; margin-top:6.5px;'>销量：165</span>
+              </div>
+            </a>
+          </li>  -->
+      </ul>
+  </div>
+  
+</div>
+<div class="tabbar">
+      <a href="./index.html">
+        <img src="img/home.png" />
+        <p>首页</p>
+      </a>
+      <a href="./zx.html">
+        <img src="img/consulting.png" />
+        <p>问答</p>
+      </a>
+      <a href="javascript:;">
+        <img src="img/medicinebox-hover.png" />
+        <p>常备药</p>
+      </a>
+      <a href="./my.html">
+        <img src="img/my.png" />
+        <p>个人中心</p>
+      </a>
+  </div>
+</div>
+  
+	</body>
+  <script type="text/javascript">
+    var page = 1;
+
+    function tabClick(n){
+      page = 1;
+      document.querySelector('.zs-top .flex.active').classList.remove('active');
+      document.querySelectorAll('.zs-top .flex')[n].classList.add('active');
+      getListData(n);
+    }
+
+    refresher.init({
+      id:"wrapper",
+      pullDownAction:Refresh,                                                            
+      pullUpAction:Load                                                                             
+    });    
+    function Refresh() {    
+      page = 1;
+      getListData(document.querySelector('.zs-top .flex.active').getAttribute('data-id'));
+      wrapper.refresh();
+    } 
+     
+    function Load() {
+      page++;
+      getListData(document.querySelector('.zs-top .flex.active').getAttribute('data-id'));
+      wrapper.refresh();
+    }
+
+     // @post limit 每页显示数量 getShopList
+     // * @post page 当前页数
+     // * ～@post type 返回订单类型 0：热门 1：销量 2：最新
+    function getListData(n){
+      var url = "/getShopList"; 
+      var data = {};
+      data.token = localStorage.getItem('token');
+      data.user_id = localStorage.getItem('id');
+      data.limit = 20;
+      data.page = page;
+      data.type = n;
+     
+      AJAX.post(data,url,'POST',function(res) {
+        if(res.code == 0){
+          var _html = '';
+          for(var i = 0 ; i < res.data.data.length ; i++){
+              if(i%2==0){
+                _html += " <li class='cbylistl'>";
+              }              
+              _html += "<a href='cbyxq.html?id="+res.data.data[i].id+"' class='flex link'>"+
+                "<div class='pic'>"+
+                  "<img src='"+res.data.data[i].shop_head_pic+"' mode='aspectFit'>"+
+                "</div>"+
+                "<div class='tittle'>"+
+                  "<span class='span-d span-colc'>"+res.data.data[i].shop_title+"</span>"+
+                "</div>"+
+                "<div class='gold'>"+
+                  "<span class='span-e span-cole' style='float:left'>￥"+res.data.data[i].shop_price / 100+"/件</span>"+
+                  "<span class='span-b span-cold' style='float:right; margin-top:6.5px;'>销量："+res.data.data[i].shop_sales+"</span>"+
+                "</div>"+
+              "</a>";
+              if(i%2==1){
+                _html += "</li>";
+              }               
+          }
+          if(page==1){
+            $("#jb_nav").html(_html);
+          }else{
+            $("#jb_nav").append(_html);
+          }
+        }else{
+
+        }
+      });
+    }
+    getListData(0);
+  </script>
+</html>

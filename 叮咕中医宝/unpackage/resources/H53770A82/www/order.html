@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1" />
+		<title>订单</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/md5.js"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src="js/ajax.js"></script>
+		<style type="text/css">
+			/* pages/order/order.wxss */
+			.order-nav {
+				height: 35px;
+				line-height: 35px;
+				width: 100%;
+				border-bottom: 1px solid #e6e6e6;
+				display: flex;
+			}
+
+			.order-nav div {
+				width: 20%;
+				text-align: center;
+				font-size: 16px;
+				color: #313131;
+			}
+
+			.order-nav div.active {
+				background: rgb(42, 148, 198);
+				color: white;
+			}
+
+			.order-list {
+				display: flex;
+				flex-direction: column;
+				border-bottom: 10px solid #f2f2f2;
+				width: 100%;
+			}
+
+			.ol-top {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				height: 40px;
+				padding: 0 5%;
+				width: 90%;
+			}
+
+			.ol-top-l {
+				display: flex;
+				align-items: center;
+			}
+
+			.ol-top-l img {
+				margin-right: 10px;
+				width: 25px;
+				height: 25px;
+				border-radius: 50%;
+			}
+
+			.ol-top-r {
+				display: flex;
+			}
+
+			.ol-mid {
+				display: flex;
+				background: #fafafa;
+				padding: 5px 5%;
+				width: 90%;
+				border-top: 1px solid #e6e6e6;
+				border-bottom: 1px solid #e6e6e6;
+			}
+
+			.ol-mid-l {
+				display: flex;
+			}
+
+			.ol-mid-l img {
+				margin-right: 10px;
+				width: 100px;
+				height: 100px;
+			}
+
+			.ol-mid-r {
+				display: flex;
+				flex-direction: column;
+			}
+
+			.omr-l {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: 5px;
+				max-height: 45px;
+				overflow: hidden;
+				width: 100%;
+			}
+
+			.omr-m span {
+				line-height: 18px;
+				margin-right: 5px;
+			}
+
+			.ol-bot {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				height: 40px;
+				padding: 0 5%;
+				width: 90%;
+			}
+
+			.olb-butn {
+				display: flex;
+				align-items: center;
+			}
+
+			.obnon {
+				height: 30px;
+				line-height: 30px;
+				font-size: 14px;
+				color: #666;
+				background: #fff;
+				border: 1px solid #E6E6E6;
+				border-radius: 4px;
+				padding: 0 10px;
+			}
+
+			.obpay {
+				height: 29px;
+				line-height: 29px;
+				font-size: 14px;
+				background: #f33;
+				color: #fff;
+				margin-left: 7.5px;
+				border: none;
+				border-radius: 4px;
+				padding: 0 10px;
+			}
+		</style>
+	</head>
+	<body onscroll="scrollLoadData()">
+
+		<!--pages/order/order.wxml-->
+		<div class='order-nav'>
+			<div class="active" onclick="tabClick(0)" data-id="0">全部</div>
+			<div onclick="tabClick(1)" data-id="1">待付款</div>
+			<div onclick="tabClick(2)" data-id="2">未发货</div>
+			<div onclick="tabClick(3)" data-id="3">已发货</div>
+			<div onclick="tabClick(4)" data-id="4">已完成</div>
+		</div>
+
+		<div class='container' id="container">
+			<!-- <div class='order-list'>
+    <div class='ol-top'>
+      <div class='ol-top-l'>
+        <img src='img/headpic.png' mode='aspectFit'>
+        <span class='span-d span-cold'>贵阳王牌诊所</span>
+      </div>
+      <div class='ol-top-r'>
+        <span class='span-d span-cole'>待付款</span>
+      </div>
+    </div>
+    <div class='ol-mid'>
+      <div class='ol-mid-l'>
+        <img src='img/1a.jpg' mode='aspectFit'>
+      </div>
+
+      <div class='ol-mid-r'>
+        <div class='omr-l'>
+          <span class='span-e span-colc'>竹炭牙刷成人软毛家用小头舒客舒克原木牙刷2支*1盒包邮</span>
+          <span class='span-d span-cole'>￥355.00</span>
+        </div>
+        <div class='omr-m'>
+          <span class='span-a span-colb'>分类：测试类</span>
+          <span class='span-a span-colb'>数量：10</span>
+        </div>
+        <span class='span-a span-colb'>订单号：354dew851g8w1a0</span>
+      </div>
+    </div>
+
+    <div class='ol-bot'>
+      <span class='span-b span-colb'>下单时间：2018-11-11 15:23</span>
+      <div class='olb-butn'>
+        <button class='obnon'>取消订单</button>
+        <button class='obpay'>付款</button>
+      </div>
+    </div>
+  </div> -->
+
+
+			<!-- <div class='order-list'>
+    <div class='ol-top'>
+      <div class='ol-top-l'>
+        <img src='img/headpic.png' mode='aspectFit'>
+        <span class='span-d span-cold'>贵阳王牌诊所</span>
+      </div>
+      <div class='ol-top-r'>
+        <span class='span-d span-cole'>等待发货</span>
+      </div>
+    </div>
+    <div class='ol-mid'>
+      <div class='ol-mid-l'>
+        <img src='img/2a.jpg' mode='aspectFit'>
+      </div>
+
+      <div class='ol-mid-r'>
+        <div class='omr-l'>
+          <span class='span-e span-colc'>竹炭牙刷成人软毛家用小头舒客舒克原木牙刷2支*1盒包邮</span>
+          <span class='span-d span-cole'>￥355.00</span>
+        </div>
+        <div class='omr-m'>
+          <span class='span-a span-colb'>分类：测试类</span>
+          <span class='span-a span-colb'>数量：10</span>
+        </div>
+        <span class='span-a span-colb'>订单号：354dew851g8w1a0</span>
+      </div>
+
+    </div>
+
+    <div class='ol-bot'>
+      <span class='span-b span-colb'>下单时间：2018-11-11 15:23</span>
+      <div class='olb-butn'>
+        
+      </div>
+    </div>
+  </div> -->
+
+
+
+
+			<!-- <div class='order-list'>
+    <div class='ol-top'>
+      <div class='ol-top-l'>
+        <img src='img/headpic.png' mode='aspectFit'>
+        <span class='span-d span-cold'>贵阳王牌诊所</span>
+      </div>
+      <div class='ol-top-r'>
+        <span class='span-d span-cole'>已发货</span>
+      </div>
+    </div>
+    <div class='ol-mid'>
+      <div class='ol-mid-l'>
+        <img src='img/1a.jpg' mode='aspectFit'>
+      </div>
+
+      <div class='ol-mid-r'>
+        <div class='omr-l'>
+          <span class='span-e span-colc'>竹炭牙刷成人软毛家用小头舒客舒克原木牙刷2支*1盒包邮</span>
+          <span class='span-d span-cole'>￥355.00</span>
+        </div>
+        <div class='omr-m'>
+          <span class='span-a span-colb'>分类：测试类</span>
+          <span class='span-a span-colb'>数量：10</span>
+        </div>
+        <span class='span-a span-colb'>订单号：354dew851g8w1a0</span>
+      </div>
+
+    </div>
+
+    <div class='ol-bot'>
+      <span class='span-b span-colb'>下单时间：2018-11-11 15:23</span>
+      
+      <div class='olb-butn'>
+        <span class='span-b span-colb'>德邦物流：46879654567</span>
+      </div>
+    </div>
+  </div> -->
+
+
+			<!-- <div class='order-list'>
+    <div class='ol-top'>
+      <div class='ol-top-l'>
+        <img src='img/headpic.png' mode='aspectFit'>
+        <span class='span-d span-cold'>贵阳王牌诊所</span>
+      </div>
+      <div class='ol-top-r'>
+        <span class='span-d span-cole'>已完成</span>
+      </div>
+    </div>
+    <div class='ol-mid'>
+      <div class='ol-mid-l'>
+        <img src='img/2a.jpg' mode='aspectFit'>
+      </div>
+
+      <div class='ol-mid-r'>
+        <div class='omr-l'>
+          <span class='span-e span-colc'>竹炭牙刷成人软毛家用小头舒客舒克原木牙刷2支*1盒包邮</span>
+          <span class='span-d span-cole'>￥355.00</span>
+        </div>
+        <div class='omr-m'>
+          <span class='span-a span-colb'>分类：测试类</span>
+          <span class='span-a span-colb'>数量：10</span>
+        </div>
+        <span class='span-a span-colb'>订单号：354dew851g8w1a0</span>
+      </div>
+
+    </div>
+
+    <div class='ol-bot'>
+      <span class='span-b span-colb'>下单时间：2018-11-11 15:23</span>
+      
+      <div class='olb-butn'>
+        <span class='span-b span-colb'>德邦物流：46879654567</span>
+      </div>
+    </div>
+  </div> -->
+
+		</div>
+
+		<div class="tabbar">
+			<a href="./index.html">
+				<img src="img/home.png" />
+				<p>首页</p>
+			</a>
+			<a href="./zx.html">
+				<img src="img/consulting.png" />
+				<p>问答</p>
+			</a>
+			<a href="./cby.html">
+				<img src="img/medicinebox.png" />
+				<p>常备药</p>
+			</a>
+			<a href="./my.html">
+				<img src="img/my.png" />
+				<p>个人中心</p>
+			</a>
+		</div>
+
+	</body>
+</html>
+
+
+<script type="text/javascript">
+	//订单状态 0：未处理 1：已关闭 2：已发货 3：已完成'
+	var page = 1;
+
+	function tabClick(n) {
+		page = 1;
+		document.querySelector('.order-nav div.active').classList.remove('active');
+		document.querySelectorAll('.order-nav div')[n].classList.add('active');
+		getTypeData(n);
+
+	}
+
+	//  获取商品订单列表 接口 名： getShopOrderList
+	// * @post limit 每页显示数量
+	// * @post page 当前页数
+	// * ～@post type 返回订单类型 0：全部 1：待付款 2：未发货 3：已发货 4：已完成
+	function getTypeData(n) {
+		var url = '/getShopOrderList';
+		var data = {
+			'type': n,
+			'limit': 20,
+			"page": page
+		};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		AJAX.post(data, url, 'POST', function(res) {
+			console.log(res);
+			if (res.code == 0) {
+				var _html = '';
+				page = res.data.current_page;
+				var statusArr = ['未处理', '已完成', '已发货', '已取消'];
+
+				for (var item in res.data.data) {
+					//for(var item of res.data.data){
+					var time = timestampToTime(res.data.data[item].create_time);
+					//var time = timestampToTime(item.create_time);
+					_html += "<div class='order-list'>" +
+						"<div class='ol-top'>" +
+						"<div class='ol-top-l'>" +
+						"<img src='img/hp.jpeg' mode='aspectFit'>" +
+						"<span class='span-d span-cold'></span>" +
+						"</div>" +
+						"<div class='ol-top-r'><span class='span-d span-cole'>" + statusArr[res.data.data[item].status] +
+						"</span></div>" +
+						"</div>" +
+						"<div class='ol-mid'>" +
+						"<div class='ol-mid-l'><img src='" + res.data.data[item].shop_pic + "' mode='aspectFit'></div>" +
+						"<div class='ol-mid-r'>" +
+						"<div class='omr-l'>" +
+						"<span class='span-e span-colc'>" + res.data.data[item].shop_title + "</span>" +
+						"<span class='span-d span-cole'>￥" + res.data.data[item].price / 100 + "</span>" +
+						"</div>" +
+						"<div class='omr-m'><span class='span-a span-colb'>分类：" + res.data.data[item].shop_type +
+						"</span><span class='span-a span-colb'>数量：" + res.data.data[item].shop_num + "</span></div>" +
+						"<span class='span-a span-colb'>订单号：" + res.data.data[item].oid + "</span>" +
+						"</div>" +
+						"</div>" +
+						"<div class='ol-bot'>" +
+						"<span class='span-b span-colb'>下单时间：" + time + "</span>";
+					if (res.data.data[item].status == 0) {
+						_html += "<div class='olb-butn'><button class='obnon' onclick='cancelOrder(\"" + res.data.data[item].oid +
+							"\")'>取消订单</button><button class='obpay' onclick='orderPay()'>付款</button></div>"
+					} else if (res.data.data[item].status == 1) {
+						_html += "<div class='olb-butn'></div>";
+					} else if (res.data.data[item].status == 2) {
+						_html += "<div class='olb-butn'><span class='span-b span-colb'>" + res.data.data[item].logistics_name + "：" +
+							res.data.data[item].logistics_order + "</span></div>";
+					}
+					_html += "</div></div>";
+				}
+				page == 1 ? $('#container').html(_html) : $('#container').append(_html);
+			} else {
+				APP.remind(res.msg);
+			}
+		});
+	}
+	getTypeData(0);
+
+	// * 取消订单 setShopOrderCancel
+	// * @post order_id 订单号
+	// * @exception 102 订单取消失败
+	function cancelOrder(orderId) { // 取消订单
+		var url = '/setShopOrderCancel';
+		var data = {};
+		data.token = localStorage.getItem('token');
+		data.user_id = localStorage.getItem('id');
+		data.order_id = orderId;
+		AJAX.post(data, url, 'POST', function(res) {
+			if (res.code == 0) {
+				APP.remind("成功取消订单");
+			} else {
+				APP.remind(res.msg);
+			}
+		});
+	}
+
+	function orderPay() {
+		alert("系统繁忙,请稍后重试！");
+	}
+
+
+
+	function scrollLoadData() { // 上拉加载
+		var innerHeight = window.innerHeight;
+		var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+		var height = document.body.scrollHeight;
+		if (height - (innerHeight + scrollTop) < 2) { // 更新数据
+			page++;
+			getTypeData(document.querySelector('.order-nav div.active').getAttribute('data-id'));
+		}
+	}
+
+	function timestampToTime(timestamp) {
+		var date = new Date(timestamp * 1000); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+		Y = date.getFullYear() + '-';
+		M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+		D = change(date.getDate()) + ' ';
+		h = change(date.getHours()) + ':';
+		m = change(date.getMinutes()) + ':';
+		s = change(date.getSeconds());
+		return Y + M + D + h + m + s;
+	}
+
+	function change(t) {
+		if (t < 10) {
+			return "0" + t;
+		} else {
+			return t;
+		}
+	}
+</script>

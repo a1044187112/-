@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"><meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=2.0,user-scalable=1"/>
+		<title>修改密码</title>
+		<link rel="stylesheet" type="text/css" href="css/app.css"/>
+		<script type="text/javascript" src="js/prefixfree.min.js" ></script>
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/jquery-1.11.0.js" ></script>
+		<style type="text/css">
+			.login{width: 80%; padding: 50px 10%; display: flex; flex-direction: column;align-items: center;}
+			.logo{text-align: center; width: 100%; align-items: center; display: flex; flex-direction: column; margin-top: 10px;}
+			.logo img{ width: 45%; margin-bottom: 20px}
+			.loginmes{ margin-top: 30px;display: flex; flex-direction: column; align-items: center;width: 100%;}
+			.loginmes input{ border-bottom: 1px solid #E6E6E6; height: 40px; line-height: 40px; color: #888888; display: block; padding-left: 5px;width: 80%; margin-bottom: 5px;}
+			.loginmes a{color: #CCCCCC;font-size: 12px; text-align: right;width:80%; height:30px; line-height: 30px;}
+			.loginbutn{ margin-top: 20px; width: 100%; padding: 10px; display: flex;flex-direction: column;align-items: center;}
+			.loginbutn a{display: block; width: 80%; height: 40px; line-height: 40px; border-radius: 4px; text-align: center; font-size: 14px;}
+			.denglu{ color: #fff; background: #2A94C6; margin-bottom: 15px;}
+			.reg{color: #666666; border: 1px solid #E6E6E6;}
+		</style>
+	</head>
+	<body>
+		
+		<div class="login">
+			<div class="logo">
+				<img src="img/logosmall.jpg" style="width: 60%;"/>
+				<img src="img/title.png" />
+			</div>
+			<div class="loginmes">
+				<input type="text" name="p" value="请输入手机号码" onfocus="if (value =='请输入手机号码'){value =''}" onblur="if (value ==''){value='请输入手机号码'}">
+				<input type="text" name="q" value="请输入密码" />
+				<input type="text" name="c_p" value="请确认密码" />
+				<a href="reg.html">返回登录</a>
+			</div>
+			<div class="loginbutn">
+				<a href="#" class="reg">确认修改</a>
+			</div>
+		</div>
+		
+	</body>
+	<script>
+		function login(){
+			
+		}
+	</script>
+</html>
